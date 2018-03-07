@@ -1,0 +1,12 @@
+selenium
+
+# Build process dependencies
+setuptools
+wheel
+
+# QA dependencies
+pytest
+pylint
+
+# PyPI dependencies
+twine

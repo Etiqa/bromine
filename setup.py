@@ -1,8 +1,10 @@
+# pylint: disable=missing-docstring
+
 from setuptools import setup, find_packages
 
 setup(
     name='bromine',
-    version='0.0.1.dev1',
+    version='0.0.1.dev2',
     description='',
     long_description='',
     url='',
@@ -19,14 +21,16 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     keywords='',
-    packages=find_packages(),
+    packages=find_packages('src'),
+    # http://setuptools.readthedocs.io/en/latest/setuptools.html#using-find-packages
+    package_dir={'': 'src'},
+    package_data={},
+    data_files=[],
     install_requires=[],
     extras_require={
         'dev': [],
         'test': [],
     },
-    package_data={},
-    data_files=[],
     entry_points={},
     project_urls={}
 )

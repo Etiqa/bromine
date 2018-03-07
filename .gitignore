@@ -1,3 +1,15 @@
+*.pyc
+
+# python setup.py bdist_wheel
 build/
 dist/
 bromine.egg-info/
+
+# IDE files
+.idea/
+
+# pytest
+.pytest_cache/
+
+# virtualenvs
+.venv*/
