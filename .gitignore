@@ -11,5 +11,8 @@ bromine.egg-info/
 # pytest
 .pytest_cache/
 
+# tox
+.tox/
+
 # virtualenvs
 .venv*/
