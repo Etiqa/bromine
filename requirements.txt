@@ -1,13 +1,2 @@
+PyHamcrest
 selenium
-
-# Build process dependencies
-setuptools
-wheel
-
-# QA dependencies
-pytest
-pylint
-tox
-
-# PyPI dependencies
-twine
