@@ -2,30 +2,42 @@
 https://packaging.python.org/tutorials/distributing-packages/
 """
 
+import codecs
 import os
 import re
 from setuptools import setup, find_packages
 
+# pylint: disable=missing-docstring
+
 PKG_NAME = 'bromine'
 SRC_DIR = 'src'
 
-def read_version(): # pylint: disable=missing-docstring
-    basedir = os.path.dirname(__file__)
-    srcdir = os.path.join(basedir, SRC_DIR)
-    version_file = os.path.join(srcdir, PKG_NAME, 'version.py')
-    with open(version_file, 'r') as fin:
-        version_file_content = fin.read()
+BASEDIR = os.path.dirname(__file__)
+
+
+def read(file_path):
+    with codecs.open(file_path, 'rU', encoding='utf-8') as fin:
+        return fin.read()
+
+
+def version():
+    version_file_content = read(os.path.join(BASEDIR, SRC_DIR, PKG_NAME, 'version.py'))
     version_match = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]',
                               version_file_content, re.M)
     if not version_match:
         raise RuntimeError('Unable to find version string.')
     return version_match.group(1)
 
+
+def long_description():
+    return read(os.path.join(BASEDIR, 'README.rst'))
+
+
 setup(
     name=PKG_NAME,
-    version=read_version(),
+    version=version(),
     description='',
-    long_description='',
+    long_description=long_description(),
     url='',
     author='Etiqa s.r.l.',
     author_email='',
@@ -42,16 +54,23 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     keywords='',
-    packages=find_packages(SRC_DIR),
+    project_urls={},
     # http://setuptools.readthedocs.io/en/latest/setuptools.html#using-find-packages
     package_dir={'': SRC_DIR},
+    packages=find_packages(SRC_DIR),
     package_data={},
     data_files=[],
     install_requires=[],
-    extras_require={
-        'dev': [],
-        'test': [],
-    },
-    entry_points={},
-    project_urls={}
+    extras_require={},
+    python_requires=', '.join([
+        '>=2.7',
+        '!=3.0.*',
+        '!=3.1.*',
+        '!=3.2.*',
+        '!=3.3.*',
+        '!=3.4.*',
+        '!=3.5.*',
+        '<4'
+    ]),
+    entry_points={}
 )

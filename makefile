@@ -20,3 +20,5 @@ clean_dist :
 
 clean_qa :
 	rm -rf .tox/ .pytest_cache/
+
+dist : clean qa build

@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
-echo 'PYTHONPATH=src pylint src/bromine'
-PYTHONPATH=src pylint src/bromine
 
-for f in tests/*.py
-do
-    echo "PYTHONPATH=src pylint ${f}"
-    PYTHONPATH=src pylint ${f}
-done
+function _run_pylint() {
+    _cmd=$1
+    echo ${_cmd}
+    eval ${_cmd}
+}
 
-for f in *.py
-do
-    echo "pylint ${f}"
-    pylint ${f}
-done
+_run_pylint 'PYTHONPATH=src pylint src/bromine'
+
+_run_pylint 'PYTHONPATH=src pylint tests'
+
+for f in *.py; do _run_pylint "pylint ${f}"; done
