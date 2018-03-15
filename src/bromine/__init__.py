@@ -1,3 +1,4 @@
 # pylint: disable=missing-docstring
 
-from bromine.version import __version__
+from .version import __version__
+from .application import WebApplication
