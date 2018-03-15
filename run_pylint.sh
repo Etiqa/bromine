@@ -8,6 +8,6 @@ function _run_pylint() {
 
 _run_pylint 'PYTHONPATH=src pylint src/bromine'
 
-_run_pylint 'PYTHONPATH=src pylint tests'
+_run_pylint 'PYTHONPATH=src pylint tests --disable=missing-docstring'
 
 for f in *.py; do _run_pylint "pylint ${f}"; done
