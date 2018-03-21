@@ -1,0 +1,4 @@
+*        text=auto
+*.py     text
+*.sh     text eol=lf
+makefile text eol=lf

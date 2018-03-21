@@ -1,4 +1,5 @@
 # Product dependencies
+six
 
 # Build process dependencies
 setuptools

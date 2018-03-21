@@ -60,7 +60,9 @@ setup(
     packages=find_packages(SRC_DIR),
     package_data={},
     data_files=[],
-    install_requires=[],
+    install_requires=[
+        'six',
+    ],
     extras_require={},
     python_requires=', '.join([
         '>=2.7',
@@ -70,7 +72,7 @@ setup(
         '!=3.3.*',
         '!=3.4.*',
         '!=3.5.*',
-        '<4'
+        '<4',
     ]),
     entry_points={}
 )
