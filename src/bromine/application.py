@@ -18,10 +18,11 @@ class WebApplication(Application):
         self._base_url = base_url
         self._browser = browser
         self._current_page = None
-        self.pages = self._page_list()
+        self._pages = {}
+        self._add_pages()
 
-    def _page_list(self): # pylint: disable=no-self-use
-        return []
+    def _add_pages(self): # pylint: disable=no-self-use
+        pass
 
     @property
     def base_url(self):
@@ -32,20 +33,14 @@ class WebApplication(Application):
         """Return the WebDriver instance"""
         return self._browser
 
-    @property
-    def pages(self):
-        return self._pages.values()
-
-    @pages.setter
-    def pages(self, pages):
-        _pages_dict = {}
-        for page in pages:
-            assert page.name is not None, 'Registered pages must have a name'
-            assert page.name not in _pages_dict, 'Duplicate name "{}"'.format(page.name)
-            page.browser = self.browser
-            page.url = urljoin(self.base_url, page.url)
-            _pages_dict[page.name] = page
-        self._pages = _pages_dict # pylint: disable=attribute-defined-outside-init
+    def add_page(self, page):
+        if page.name is None:
+            raise ValueError('Registered pages must have a name')
+        if page.name in self._pages:
+            raise ValueError('Duplicate name "{}"'.format(page.name))
+        page.browser = self.browser
+        page.url = urljoin(self.base_url, page.url)
+        self._pages[page.name] = page
 
     def get_page(self, name):
         """Retrieve a previously registered web page."""
