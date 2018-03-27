@@ -1,12 +1,13 @@
 # Product dependencies
 six
+selenium
 
 # Build process dependencies
 setuptools
 wheel
 
 # QA dependencies
-pytest
+-r requirements-test.txt
 pylint
 tox
 
