@@ -18,8 +18,7 @@ class NoSuchElementException(_se.NoSuchElementException, BromineException):
 
 
 class MultipleElementsFoundError(BromineException):
-    """Multiple instances of a DOM element were found."""
-    # TODO: improve docstring
+    """Multiple instances of a DOM element were found, but only one was expected."""
 
 
 class StaleElementReferenceException(_se.StaleElementReferenceException, BromineException):

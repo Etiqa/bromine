@@ -1,4 +1,12 @@
+"""
+Web page model.
+"""
+
 class WebPage(object):
+    """Represents a Web Page.
+
+    Web pages can be grouped into a web application.
+    """
 
     def __init__(self, url, browser=None, name=None):
         self._url = url
@@ -8,6 +16,7 @@ class WebPage(object):
 
     @property
     def url(self):
+        """Web page's URL."""
         return self._url
 
     @url.setter
@@ -16,11 +25,8 @@ class WebPage(object):
 
     @property
     def browser(self):
+        """Instance of Selenium WebDriver."""
         return self._browser
-
-    @browser.setter
-    def browser(self, value):
-        self._browser = value
 
     @browser.setter
     def browser(self, value):
@@ -28,7 +34,9 @@ class WebPage(object):
 
     @property
     def name(self):
+        """Optional name to identify this web page."""
         return self._name
 
     def _add_elements(self):
+        """Override this method to declare this page's elements."""
         pass

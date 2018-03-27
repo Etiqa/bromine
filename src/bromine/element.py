@@ -1,3 +1,7 @@
+"""
+Web element model.
+"""
+
 from collections import namedtuple
 
 from bromine.exceptions import (NoSuchElementException,
@@ -25,6 +29,7 @@ class WebElement(Element):
 
     @property
     def dom_element(self):
+        """Underlying Selenium WebElement object."""
         if self._dom_element is None:
             self._find_dom_element()
         return self._dom_element
@@ -43,6 +48,7 @@ class WebElement(Element):
             self._dom_element = element
 
     def is_present(self):
+        """Test whether this element is attached to the DOM."""
         try:
             self._find_dom_element()
         except NoSuchElementException:
@@ -51,6 +57,15 @@ class WebElement(Element):
             return True
 
     def is_displayed(self):
+        """Test whether this element is displayed.
+
+        This method invokes is_displayed() method of the underlying
+        dom_element.
+        If the underlying dom_element is stale, it is automatically
+        refreshed.
+        If dom_element is not present, this method returns False
+        instead of raising NoSuchElementException.
+        """
         try:
             return self.dom_element.is_displayed()
         except NoSuchElementException:
@@ -68,7 +83,7 @@ class WebElement(Element):
         except StaleElementReferenceException:
             self._find_dom_element()
             attr = getattr(self.dom_element, name)
-        if not callable(attr):
+        if not callable(attr): # pylint: disable=no-else-return
             return attr
         else:
             def auto_refresh_wrapper(*args, **kwargs):

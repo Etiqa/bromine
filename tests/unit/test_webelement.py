@@ -46,27 +46,18 @@ def stale_dom_element_mock():
 
 def test_loading_dom_element_for_the_first_time(browser):
     el = WebElement(browser, "some_tag[@some_attr='some_value']")
-    el._find_dom_element = Mock(wraps=el._find_dom_element)
+    el._find_dom_element = Mock(wraps=el._find_dom_element) # pylint: disable=protected-access
     dom_el = el.dom_element
     assert dom_el is not None
-    el._find_dom_element.assert_called_once()
+    el._find_dom_element.assert_called_once() # pylint: disable=protected-access
 
 
 def test_subsequent_accesses_to_dom_element_use_cached_object(browser):
     el = WebElement(browser, "some_tag[@some_attr='some_value']")
-    el._find_dom_element = Mock(wraps=el._find_dom_element)
+    el._find_dom_element = Mock(wraps=el._find_dom_element) # pylint: disable=protected-access
     dom_el = el.dom_element
     assert el.dom_element is dom_el
-    el._find_dom_element.assert_called_once()
-
-
-def test_is_present_always_refreshes_dom_element(browser):
-    el = WebElement(browser, "some_tag[@some_attr='some_value']")
-    el._find_dom_element = Mock(wraps=el._find_dom_element)
-    dom_el = el.dom_element
-    el.is_present()
-    assert el.dom_element is not dom_el
-    assert el._find_dom_element.call_count == 2
+    el._find_dom_element.assert_called_once() # pylint: disable=protected-access
 
 
 def test_no_such_element_exception(browser):
@@ -94,6 +85,15 @@ def test_is_not_present(browser):
     assert not el.is_present()
 
 
+def test_is_present_always_refreshes_dom_element(browser):
+    el = WebElement(browser, "some_tag[@some_attr='some_value']")
+    el._find_dom_element = Mock(wraps=el._find_dom_element) # pylint: disable=protected-access
+    dom_el = el.dom_element
+    el.is_present()
+    assert el.dom_element is not dom_el
+    assert el._find_dom_element.call_count == 2 # pylint: disable=protected-access
+
+
 def test_is_displayed(browser, displayed_dom_element):
     browser.find_elements_by_xpath = Mock(return_value=[displayed_dom_element])
     el = WebElement(browser, "some_tag[@some_attr='some_value']")
@@ -109,11 +109,11 @@ def test_is_not_displayed(browser, hidden_dom_element):
 def test_is_displayed_when_stale(browser, stale_dom_element, displayed_dom_element):
     browser.find_elements_by_xpath.side_effect = ([stale_dom_element], [displayed_dom_element])
     el = WebElement(browser, "some_tag[@some_attr='some_value']")
-    el._find_dom_element = Mock(wraps=el._find_dom_element)
+    el._find_dom_element = Mock(wraps=el._find_dom_element) # pylint: disable=protected-access
     assert el.dom_element is stale_dom_element
     assert el.is_displayed()
     assert el.dom_element is displayed_dom_element
-    assert el._find_dom_element.call_count == 2
+    assert el._find_dom_element.call_count == 2 # pylint: disable=protected-access
     stale_dom_element.is_displayed.assert_called_once()
     displayed_dom_element.is_displayed.assert_called_once()
 
@@ -121,11 +121,11 @@ def test_is_displayed_when_stale(browser, stale_dom_element, displayed_dom_eleme
 def test_is_not_displayed_when_stale(browser, stale_dom_element, hidden_dom_element):
     browser.find_elements_by_xpath.side_effect = ([stale_dom_element], [hidden_dom_element])
     el = WebElement(browser, "some_tag[@some_attr='some_value']")
-    el._find_dom_element = Mock(wraps=el._find_dom_element)
+    el._find_dom_element = Mock(wraps=el._find_dom_element) # pylint: disable=protected-access
     assert el.dom_element is stale_dom_element
     assert not el.is_displayed()
     assert el.dom_element is hidden_dom_element
-    assert el._find_dom_element.call_count == 2
+    assert el._find_dom_element.call_count == 2 # pylint: disable=protected-access
     stale_dom_element.is_displayed.assert_called_once()
     hidden_dom_element.is_displayed.assert_called_once()
 
@@ -139,10 +139,10 @@ def test_is_not_displayed_when_dom_element_is_not_present(browser):
 def test_is_not_displayed_when_dom_element_is_stale_and_no_more_present(browser, stale_dom_element):
     browser.find_elements_by_xpath.side_effect = ([stale_dom_element], [])
     el = WebElement(browser, "some_tag[@some_attr='some_value']")
-    el._find_dom_element = Mock(wraps=el._find_dom_element)
+    el._find_dom_element = Mock(wraps=el._find_dom_element) # pylint: disable=protected-access
     assert el.dom_element is stale_dom_element
     assert not el.is_displayed()
-    assert el._find_dom_element.call_count == 2
+    assert el._find_dom_element.call_count == 2 # pylint: disable=protected-access
     stale_dom_element.is_displayed.assert_called_once()
 
 
