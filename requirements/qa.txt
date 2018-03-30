@@ -1,0 +1,4 @@
+# QA dependencies
+-r test.txt
+pylint
+tox

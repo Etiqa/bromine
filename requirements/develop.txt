@@ -1,0 +1,4 @@
+-r bromine.txt
+-r build.txt
+-r qa.txt
+-r pypi.txt

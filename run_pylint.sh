@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-function _run_pylint() {
-    _cmd=$1
-    echo ${_cmd}
-    eval ${_cmd}
-}
+set -x
 
-_run_pylint 'PYTHONPATH=src pylint src/bromine'
+PYTHONPATH=src pylint src/bromine
 
-_run_pylint 'PYTHONPATH=src pylint tests --disable=missing-docstring'
+PYTHONPATH=src pylint tests --disable=missing-docstring
 
-for f in *.py; do _run_pylint "pylint ${f}"; done
+for f in *.py; do
+    pylint "${f}"
+done

@@ -1,0 +1,3 @@
+# Build process dependencies
+setuptools
+wheel
