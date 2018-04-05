@@ -62,4 +62,24 @@ node {
             """
         }
     }
+    stage('Publish to Private Nexus') {
+        if ((currentBuild.result != 'UNSTABLE' && currentBuild.result != 'FAILURE')
+                && (env.BRANCH_NAME == "master")) {
+            docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
+                withCredentials([
+                    usernamePassword(credentialsId: 'Nexus',
+                                     usernameVariable: 'USERNAME',
+                                     passwordVariable: 'PASSWORD'),
+                    string(credentialsId: 'nexus_url', variable: 'NEXUS_URL')
+                ]) {
+                    sh """
+                    python3 -m venv /tmp/venv
+                    . /tmp/venv/bin/activate
+                    pip install --no-cache-dir -r requirements/pypi.txt
+                    twine upload --repository-url ${NEXUS_URL}/bromine/ -u $USERNAME -p $PASSWORD dist/bromine-*.whl dist/bromine-*.whl.asc
+                    """
+                }
+            }
+        }
+    }
 }
