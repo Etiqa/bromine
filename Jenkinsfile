@@ -67,9 +67,10 @@ node {
             """
         }
     }
-    stage('Publish to Private Nexus') {
-        if ((currentBuild.result != 'UNSTABLE' && currentBuild.result != 'FAILURE')
+
+    if ((currentBuild.result != 'UNSTABLE' && currentBuild.result != 'FAILURE')
                 && (env.BRANCH_NAME.startsWith("development/"))) {
+        stage('Publish to Private Nexus') {
             docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
                 withCredentials([
                     usernamePassword(credentialsId: 'Nexus',
