@@ -2,8 +2,13 @@ node {
     stage('Git Checkout') {
         sh 'if [ -d ".git" ]; then git clean -ffdx; fi'
         checkout scm
-        sh 'sed -i "s/BUILD/${BUILD_NUMBER}/g" src/bromine/version.py'
-        sh 'sed -i "s/COMMIT/$(git log -n 1 --pretty=format:\"%h\")/g" src/bromine/version.py'
+
+        if (env.BRANCH_NAME.startsWith('release/')) {
+            sh 'sed -i "s/_BUILD//g" src/bromine/_version.py'
+        } else {
+            sh 'sed -i "s/_BUILD/.dev${BUILD_NUMBER}/g" src/bromine/_version.py'
+        }
+        sh 'sed -i "s/COMMIT/$(git log -n 1 --pretty=format:\"%h\")/g" src/bromine/_version.py'
     }
     stage('Bdist Wheel') {
         docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
@@ -64,7 +69,7 @@ node {
     }
     stage('Publish to Private Nexus') {
         if ((currentBuild.result != 'UNSTABLE' && currentBuild.result != 'FAILURE')
-                && (env.BRANCH_NAME == "master")) {
+                && (env.BRANCH_NAME.startsWith("development/"))) {
             docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
                 withCredentials([
                     usernamePassword(credentialsId: 'Nexus',

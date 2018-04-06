@@ -21,7 +21,7 @@ def read(file_path):
 
 
 def version():
-    version_file_content = read(os.path.join(BASEDIR, SRC_DIR, PKG_NAME, 'version.py'))
+    version_file_content = read(os.path.join(BASEDIR, SRC_DIR, PKG_NAME, '_version.py'))
     version_match = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]',
                               version_file_content, re.M)
     if not version_match:
