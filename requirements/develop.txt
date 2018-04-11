@@ -2,3 +2,4 @@
 -r build.txt
 -r qa.txt
 -r pypi.txt
+-r docs.txt

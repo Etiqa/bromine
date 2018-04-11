@@ -16,3 +16,6 @@ bromine.egg-info/
 
 # virtualenvs
 .venv*/
+
+# sphinx
+/docs/_build/
