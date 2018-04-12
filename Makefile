@@ -23,5 +23,6 @@ test :
 
 dist : clean build qa
 
-doc :
+.PHONY: docs
+docs :
 	tox -e docs
