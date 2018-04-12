@@ -22,3 +22,6 @@ test :
 	PYTHONPATH=src pytest -s
 
 dist : clean build qa
+
+doc :
+	tox -e docs

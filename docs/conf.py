@@ -24,9 +24,10 @@ copyright = '2018, Etiqa s.r.l.'
 author = 'Etiqa s.r.l.'
 
 # The short X.Y version
-version = '0.0.1'
+from bromine import __version__
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
