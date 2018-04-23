@@ -68,7 +68,7 @@ node {
         }
     }
 
-    if (env.BRANCH_NAME.startsWith("development/")) {
+    if (env.BRANCH_NAME.startsWith("development/") || env.BRANCH_NAME.startsWith("release/")) {
         stage('Publish to Private Nexus') {
             docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
                 withCredentials([
@@ -84,6 +84,17 @@ node {
                     twine upload --repository-url ${NEXUS_URL}/bromine/ -u $USERNAME -p $PASSWORD dist/bromine-*.whl dist/bromine-*.whl.asc
                     """
                 }
+            }
+        }
+
+        if (env.BRANCH_NAME.startsWith("release/")) {
+            stage('Git Tag') {
+                def built_version = sh(returnStdout: true,
+                                       script: "ls -1 dist/bromine-*.whl | cut -d '-' -f 2").trim()
+                sh """
+                git tag ${built_version}
+                git push origin ${built_version}
+                """
             }
         }
     }
