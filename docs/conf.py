@@ -23,11 +23,22 @@ project = 'Bromine'
 copyright = '2018, Etiqa s.r.l.'
 author = 'Etiqa s.r.l.'
 
-# The short X.Y version
-from bromine import __version__
-version = __version__
 # The full version, including alpha/beta/rc tags
+from bromine import __version__
 release = __version__
+
+# The short X.Y version
+def short_version(full_version):
+    from packaging.version import parse as parse_version
+    parsed_version = parse_version(full_version.replace('_BUILD', ''))
+    major, minor, patch = parsed_version.release
+    if major == minor == 0:
+        return parsed_version.base_version
+    else:
+        import re
+        return re.sub(r'\.{}$'.format(patch), '', parsed_version.base_version)
+
+version = short_version(release)
 
 
 # -- General configuration ---------------------------------------------------
