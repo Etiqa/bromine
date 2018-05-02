@@ -38,6 +38,7 @@ setup(
     version=version(),
     description='',
     long_description=long_description(),
+    long_description_content_type='text/x-rst',
     url='',
     author='Etiqa s.r.l.',
     author_email='',
