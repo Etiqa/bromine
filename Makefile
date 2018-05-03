@@ -26,3 +26,6 @@ dist : clean build qa
 .PHONY: docs
 docs :
 	tox -e docs
+
+pip-freeze :
+	pip freeze --all --local >pip.freeze
