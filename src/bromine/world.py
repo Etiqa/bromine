@@ -1,7 +1,7 @@
 """
 A model of the World as a collection of browser sessions.
 
-Conceptually, this is the root of Bromine's model.
+Ideally, this is the root of Bromine's conceptual model.
 
 A session is a tuple that links a User, a WebDriver instance and an Application.
 """
@@ -64,7 +64,7 @@ class World(object):
 
 
 class BrowserSession(object): # pylint: disable=too-few-public-methods
-    """Session = (Browser, User, Application)."""
+    """session = <browser, user, application>."""
 
     def __init__(self, browser, user, application):
         self.browser = browser
