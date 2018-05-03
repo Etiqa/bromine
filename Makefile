@@ -29,3 +29,6 @@ docs :
 
 pip-freeze :
 	pip freeze --all --local >pip.freeze
+
+pip-upgrade :
+	pip install -U -r requirements/all.txt
