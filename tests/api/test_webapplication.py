@@ -14,7 +14,15 @@ def app_fixture():
 
 
 def test_base_url(app):
-    assert app.base_url == 'https://www.example.com'
+    assert app.base_url() == 'https://www.example.com'
+
+
+def test_get_https_base_url(app):
+    assert app.base_url('https') == 'https://www.example.com'
+
+
+def test_get_http_base_url(app):
+    assert app.base_url('http') == 'http://www.example.com'
 
 
 def test_browser(app):
@@ -26,7 +34,7 @@ def test_get_page(app):
 
 
 def test_registered_page_url(app):
-    assert app.get_page('some page').url == 'https://www.example.com/some/page'
+    assert app.get_page('some page').url() == 'https://www.example.com/some/page'
 
 
 def test_registered_page_browser(app):

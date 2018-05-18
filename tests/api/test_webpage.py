@@ -1,38 +1,29 @@
 import pytest
 
-from bromine import WebPage
+from bromine import WebPage, WebApplication
 
 
 @pytest.fixture(name='page')
 def page_fixture():
-    page = WebPage('https://www.example.com/some/page')
+    page = WebPage('/some/page')
+    page.application = WebApplication('https://www.example.com', object())
     return page
 
 
 def test_url(page):
-    assert page.url == 'https://www.example.com/some/page'
+    assert page.url() == 'https://www.example.com/some/page'
 
 
-def test_modify_url(page):
-    some_other_url = '/some/other/url'
-    page.url = some_other_url
-    assert page.url == some_other_url
+def test_https_url(page):
+    assert page.url('https') == 'https://www.example.com/some/page'
 
 
-def test_default_browser(page):
-    assert page.browser is None
+def test_http_url(page):
+    assert page.url('http') == 'http://www.example.com/some/page'
 
 
-def test_set_browser(page):
-    browser = object()
-    page.browser = browser
-    assert page.browser is browser
-
-
-def test_pass_browser_to_init():
-    browser = object()
-    page = WebPage('https://www.example.com/some/page', browser=browser)
-    assert page.browser is browser
+def test_browser(page):
+    assert page.browser is page.application.browser
 
 
 def test_default_name(page):

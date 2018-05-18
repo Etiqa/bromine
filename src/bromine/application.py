@@ -2,9 +2,8 @@
 Web application model.
 """
 
-from six.moves.urllib.parse import urljoin
-
 from .exceptions import NoSuchPageError
+from .utils import url_with_given_scheme
 
 
 class Application(object):
@@ -24,9 +23,8 @@ class WebApplication(Application):
     def _add_pages(self): # pylint: disable=no-self-use
         pass
 
-    @property
-    def base_url(self):
-        return self._base_url
+    def base_url(self, scheme=None):
+        return url_with_given_scheme(self._base_url, scheme)
 
     @property
     def browser(self):
@@ -38,8 +36,7 @@ class WebApplication(Application):
             raise ValueError('Registered pages must have a name')
         if page.name in self._pages:
             raise ValueError('Duplicate name "{}"'.format(page.name))
-        page.browser = self.browser
-        page.url = urljoin(self.base_url, page.url)
+        page.application = self
         self._pages[page.name] = page
 
     def get_page(self, name):

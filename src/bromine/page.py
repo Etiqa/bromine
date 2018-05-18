@@ -2,35 +2,41 @@
 Web page model.
 """
 
+from six.moves.urllib.parse import urljoin
+
+from .utils import url_with_given_scheme
+
+
 class WebPage(object):
     """Represents a Web Page.
 
-    Web pages can be grouped into a web application.
+    Web pages are grouped into a web application.
     """
 
-    def __init__(self, url, browser=None, name=None):
+    def __init__(self, url, name=None):
         self._url = url
-        self._browser = browser
         self._name = name
+        self.application = None
         self._add_elements()
 
     @property
-    def url(self):
-        """Web page's URL."""
-        return self._url
+    def application(self):
+        return self._application
 
-    @url.setter
-    def url(self, value):
-        self._url = value
+    @application.setter
+    def application(self, value):
+        self._application = value
+
+    def url(self, scheme=None):
+        """Web page's URL."""
+        base_url = self.application.base_url() if self.application else ''
+        joined_url = urljoin(base_url, self._url)
+        return url_with_given_scheme(joined_url, scheme)
 
     @property
     def browser(self):
         """Instance of Selenium WebDriver."""
-        return self._browser
-
-    @browser.setter
-    def browser(self, value):
-        self._browser = value
+        return self.application.browser if self.application else None
 
     @property
     def name(self):

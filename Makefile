@@ -19,7 +19,7 @@ clean_qa :
 clean : clean_dist clean_qa
 
 test :
-	PYTHONPATH=src pytest -s
+	PYTHONPATH=src pytest -s -ra
 
 dist : clean build qa
 
