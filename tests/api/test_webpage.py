@@ -1,6 +1,6 @@
 import pytest
 
-from bromine import WebPage, WebApplication
+from bromine import WebPage, WebApplication, WebElement
 
 
 @pytest.fixture(name='page')
@@ -43,6 +43,7 @@ def test_name_is_readonly(page):
 def test_add_elements():
     class MyPage(WebPage):
         def _add_elements(self):
-            self.some_element = object()
-    page = MyPage(None, '/some/page')
-    assert hasattr(page, 'some_element')
+            self.some_element = WebElement(self.browser, '')
+    app = WebApplication('https://www.example.com', object())
+    page = MyPage(app, '/some/page')
+    assert page.some_element._browser is page.browser
