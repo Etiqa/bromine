@@ -13,19 +13,17 @@ class WebPage(object):
     Web pages are grouped into a web application.
     """
 
-    def __init__(self, url, name=None):
+    def __init__(self, application, url, name=None):
         self._url = url
+        if not name:
+            name = self._url
         self._name = name
-        self.application = None
+        self._application = application
         self._add_elements()
 
     @property
     def application(self):
         return self._application
-
-    @application.setter
-    def application(self, value):
-        self._application = value
 
     def url(self, scheme=None):
         """Web page's URL."""

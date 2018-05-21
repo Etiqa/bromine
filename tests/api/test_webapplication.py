@@ -8,7 +8,7 @@ from bromine.exceptions import NoSuchPageError
 def app_fixture():
     class MyWebApp(WebApplication):
         def _add_pages(self):
-            self.add_page(WebPage('/some/page', name='some page'))
+            self.add_page(WebPage(self, '/some/page', name='some page'))
     app = MyWebApp('https://www.example.com', object())
     return app
 
@@ -62,10 +62,16 @@ def test_current_page_must_be_registered(app): #pylint: disable=invalid-name
 
 
 def test_add_page_without_name(app):
-    with pytest.raises(ValueError):
-        app.add_page(WebPage('/page/without/name'))
+    with pytest.raises(ValueError, match="Page's name must not be empty"):
+        app.add_page(WebPage(app, '', name=None))
 
 
 def test_duplicated_page_name_error(app):
-    with pytest.raises(ValueError):
-        app.add_page(WebPage('/another/page', name='some page'))
+    with pytest.raises(ValueError, match='Duplicate name "some page"'):
+        app.add_page(WebPage(app, '/another/page', name='some page'))
+
+
+def test_inconsistent_application_error(app): # pylint: disable=invalid-name
+    another_app = WebApplication(None, None)
+    with pytest.raises(ValueError, match="Page's application is inconsistent"):
+        app.add_page(WebPage(another_app, '/'))

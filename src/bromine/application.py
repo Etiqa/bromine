@@ -32,11 +32,12 @@ class WebApplication(Application):
         return self._browser
 
     def add_page(self, page):
-        if page.name is None:
-            raise ValueError('Registered pages must have a name')
+        if not page.name:
+            raise ValueError("Page's name must not be empty")
         if page.name in self._pages:
             raise ValueError('Duplicate name "{}"'.format(page.name))
-        page.application = self
+        if page.application is not self:
+            raise ValueError("Page's application is inconsistent")
         self._pages[page.name] = page
 
     def get_page(self, name):

@@ -2,7 +2,7 @@ import pytest
 from bromine import WebApplication
 
 
-test_base_urls = (
+test_base_urls = ( # pylint: disable=invalid-name
     'https://www.example.com',
     'http://www.example.com',
     '//www.example.com',

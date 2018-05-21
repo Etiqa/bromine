@@ -1,7 +1,7 @@
 import pytest
 from bromine import WebApplication, WebPage
 
-
+# pylint: disable=line-too-long
 @pytest.mark.parametrize('base_url,page_url,expected', (
     ('http://www.example.com', 'some/relative/path', 'http://www.example.com/some/relative/path'),
     ('http://www.example.com', '/some/absolute/path', 'http://www.example.com/some/absolute/path'),
@@ -21,6 +21,6 @@ from bromine import WebApplication, WebPage
     ('www.example.com', 'other.domain.com/some/path', 'other.domain.com/some/path')
 ))
 def test_full_page_url(base_url, page_url, expected):
-    page = WebPage(page_url)
-    page.application = WebApplication(base_url, None)
+    app = WebApplication(base_url, None)
+    page = WebPage(app, page_url)
     assert page.url() == expected
