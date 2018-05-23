@@ -1,11 +1,16 @@
 import pytest
 
+from selenium.webdriver import Remote as SeWebDriver
+
 from bromine import WebPage, WebApplication, WebElement
+
+from .. import Mock
 
 
 @pytest.fixture(name='page')
 def page_fixture():
-    app = WebApplication('https://www.example.com', object())
+    browser = Mock(spec=SeWebDriver)
+    app = WebApplication('https://www.example.com', browser)
     page = WebPage(app, '/some/page')
     return page
 
@@ -46,4 +51,16 @@ def test_add_elements():
             self.some_element = WebElement(self.browser, '')
     app = WebApplication('https://www.example.com', object())
     page = MyPage(app, '/some/page')
-    assert page.some_element._browser is page.browser
+    assert page.some_element._browser is page.browser # pylint: disable=protected-access
+
+
+def test_title(page):
+    assert page.title is page.browser.title
+
+
+def test_go_to(page):
+    assert hasattr(page, 'go_to')
+
+
+def test_is_current_page(page):
+    assert hasattr(page, 'is_current_page')

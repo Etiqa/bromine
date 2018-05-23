@@ -1,13 +1,8 @@
 # pylint: disable=wrong-import-position,invalid-name,no-self-use,too-few-public-methods
 
 import pytest
-import six
-if six.PY3:
-    from unittest.mock import Mock, PropertyMock
-else:
-    from mock import Mock, PropertyMock # pylint: disable=import-error
 
-from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver import Remote as SeWebDriver
 from selenium.webdriver.remote.webdriver import WebElement as SeWebElement
 
 from bromine import WebElement
@@ -15,10 +10,12 @@ from bromine.exceptions import (NoSuchElementException,
                                 MultipleElementsFoundError,
                                 StaleElementReferenceException)
 
+from .. import Mock, PropertyMock
+
 
 @pytest.fixture(name='browser')
 def webdriver_mock():
-    mock = Mock(spec=WebDriver)
+    mock = Mock(spec=SeWebDriver)
     mock.find_elements_by_xpath.side_effect = lambda self: [Mock(spec=SeWebElement)]
     return mock
 

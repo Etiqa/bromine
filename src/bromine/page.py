@@ -21,15 +21,12 @@ class WebPage(object):
         self._application = application
         self._add_elements()
 
+    def _add_elements(self):
+        """Override this method to declare this page's elements."""
+
     @property
     def application(self):
         return self._application
-
-    def url(self, scheme=None):
-        """Web page's URL."""
-        base_url = self.application.base_url() if self.application else ''
-        joined_url = urljoin(base_url, self._url)
-        return url_with_given_scheme(joined_url, scheme)
 
     @property
     def browser(self):
@@ -41,6 +38,19 @@ class WebPage(object):
         """Optional name to identify this web page."""
         return self._name
 
-    def _add_elements(self):
-        """Override this method to declare this page's elements."""
-        pass
+    def url(self, scheme=None):
+        """Web page's URL."""
+        base_url = self.application.base_url() if self.application else ''
+        joined_url = urljoin(base_url, self._url)
+        return url_with_given_scheme(joined_url, scheme)
+
+    def go_to(self):
+        self.browser.get(self.url())
+        assert self.is_current_page()
+
+    def is_current_page(self):
+        return self.browser.current_url == self.url()
+
+    @property
+    def title(self):
+        return self.browser.title
