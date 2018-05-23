@@ -4,7 +4,7 @@ from selenium.webdriver import Remote as SeWebDriver
 
 from bromine import WebPage, WebApplication, WebElement
 
-from .. import Mock
+from .. import Mock, PropertyMock
 
 
 @pytest.fixture(name='page')
@@ -55,7 +55,9 @@ def test_add_elements():
 
 
 def test_title(page):
-    assert page.title is page.browser.title
+    mocked_title = PropertyMock(return_value='some title')
+    type(page.browser).title = mocked_title
+    assert page.title == 'some title'
 
 
 def test_go_to(page):

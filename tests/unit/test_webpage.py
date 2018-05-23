@@ -31,16 +31,6 @@ def test_full_page_url(base_url, page_url, expected):
     assert page.url() == expected
 
 
-def test_page_title_proxies_browser_title(): # pylint: disable=invalid-name
-    browser = Mock(spec=SeWebDriver)
-    mocked_title = PropertyMock(return_value='some value')
-    type(browser).title = mocked_title
-    app = WebApplication('https://www.example.com', browser)
-    page = WebPage(app, '/some/page')
-    assert page.title == 'some value'
-    mocked_title.assert_called_once()
-
-
 @pytest.mark.skip(reason="not implemented") # TODO: write implementation
 class TestGoTo(object):
 
