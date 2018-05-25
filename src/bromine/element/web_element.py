@@ -2,15 +2,12 @@
 Web element model.
 """
 
-from collections import namedtuple
+import six
 
 from bromine.exceptions import (NoSuchElementException,
                                 MultipleElementsFoundError,
                                 StaleElementReferenceException)
-
-
-class Element(object): # pylint: disable=too-few-public-methods
-    """Represents a UI component inside a View."""
+from . import Element, Locator, XPath
 
 
 class WebElement(Element):
@@ -20,12 +17,15 @@ class WebElement(Element):
     to avoid StaleElementReferenceException's
     """
 
-    Locator = namedtuple('Locator', ('by', 'path'))
-
-    def __init__(self, browser, path, find_by='xpath'):
-        self._locator = WebElement.Locator(find_by, path)
+    def __init__(self, browser, locator, dom_element=None):
+        if not isinstance(locator, Locator):
+            if not isinstance(locator, six.string_types):
+                raise TypeError('locator must be a Locator instance or a XPath string')
+            locator = XPath(locator)
+        self._locator = locator
         self._browser = browser
-        self._dom_element = None
+        self._dom_element = dom_element
+        # TODO: consistency check: dom_element's driver is self._browser
 
     @property
     def dom_element(self):
@@ -35,9 +35,7 @@ class WebElement(Element):
         return self._dom_element
 
     def _find_dom_element(self):
-        find_method = 'find_elements_by_{}'.format(self._locator.by)
-        find = getattr(self._browser, find_method)
-        found_elements = find(self._locator.path)
+        found_elements = self._locator(self._browser)
         if not found_elements:
             raise NoSuchElementException(self._locator)
         elif len(found_elements) > 1:
@@ -145,3 +143,19 @@ class WebElement(Element):
     #                     raise
     #         else:
     #             raise
+
+
+# TODO: DOC: elements array must not change during iteration
+class ElementCollection(object):
+
+    def __init__(self, browser, locator, element_factory=WebElement):
+        self._locator = locator
+        self._browser = browser
+        self._element_factory = element_factory
+
+    def __iter__(self):
+        dom_elements = self._locator.find_elements(self._browser)
+        return (self._instantiate_item(i, el) for i, el in enumerate(dom_elements))
+
+    def _instantiate_item(self, index, dom_element):
+        return self._element_factory(self._browser, self._locator.item(index), dom_element)

@@ -31,7 +31,7 @@ def test_full_page_url(base_url, page_url, expected):
     assert page.url() == expected
 
 
-@pytest.mark.skip(reason="not implemented") # TODO: write implementation
+@pytest.mark.skip(reason="TODO: this test has not been implemented yet") # TODO: write test
 class TestGoTo(object):
 
     def test_go_to_calls_browser_get(self):
@@ -44,7 +44,7 @@ class TestGoTo(object):
         raise NotImplementedError
 
 
-@pytest.mark.skip(reason="not implemented") # TODO: write implementation
+@pytest.mark.skip(reason="TODO: this test has not been implemented yet") # TODO: write test
 class TestIsCurrentPage(object):
 
     def test_current_url(self):

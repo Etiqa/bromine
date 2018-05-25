@@ -188,3 +188,19 @@ def test_refreshes_dom_element_on_method_call_when_stale(browser):
     assert el.dom_element is stale_element_mock
     assert el.some_method('some value') == 'some value'
     assert el.dom_element is dom_element_mock
+
+
+@pytest.mark.skip(reason="TODO: this test has not been implemented yet") # TODO: write test
+def test_non_xpath_locators():
+    raise NotImplementedError
+
+
+@pytest.mark.skip(reason="TODO: this test has not been implemented yet") # TODO: write test
+def test_element_collection():
+    raise NotImplementedError
+
+
+@pytest.mark.skip(reason="TODO: this test has not been implemented yet") # TODO: write test
+def test_initial_dom_element():
+    # scenarios: None, stale, valid
+    raise NotImplementedError
