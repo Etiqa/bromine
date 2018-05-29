@@ -4,6 +4,7 @@ class Locator(object):
         raise NotImplementedError
 
     def item(self, index):
+        # TODO: DOC highlight different semantics than CSS Selectors' :nth-child pseudo-class
         return LocatorChain(self).item(index)
 
 
@@ -34,7 +35,7 @@ class XPath(LocatorBy):
         return cls(value)
 
 
-class IndexLocator(Locator):
+class _IndexLocator(Locator):
 
     def __init__(self, index):
         self._index = index
@@ -61,7 +62,7 @@ class LocatorChain(Locator):
         return result
 
     def item(self, index):
-        return self.add(IndexLocator(index))
+        return self.add(_IndexLocator(index))
 
     def add(self, locator):
         locators = list(self._locators)

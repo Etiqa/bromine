@@ -7,7 +7,8 @@ import six
 from bromine.exceptions import (NoSuchElementException,
                                 MultipleElementsFoundError,
                                 StaleElementReferenceException)
-from . import Element, Locator, XPath
+from .base import Element
+from .locator import Locator, XPath
 
 
 class WebElement(Element):
