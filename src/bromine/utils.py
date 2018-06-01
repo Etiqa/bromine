@@ -49,6 +49,6 @@ class RobotsTxt(object):
                 if len(split) != 2:
                     continue
                 field, value = [x.strip() for x in split]
-                line = '{0}: {1}'.format(field, value)
-            directives.append(line)
+                directive = (field, value)
+            directives.append(directive)
         return directives
