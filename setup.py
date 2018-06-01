@@ -64,6 +64,7 @@ setup(
     install_requires=[
         'six',
         'selenium',
+        'requests',
     ],
     extras_require={},
     python_requires=', '.join([
