@@ -3,7 +3,7 @@ Web application model.
 """
 
 from .exceptions import NoSuchPageError
-from .utils import url_with_given_scheme
+from .utils import url_with_given_scheme, RobotsTxt
 
 
 class Application(object):
@@ -59,3 +59,6 @@ class WebApplication(Application):
         if not isinstance(page, type(registered_page)):
             raise NoSuchPageError(type(page)) # TODO: raise more informative exception class
         self._current_page = page
+
+    def robots_txt(self, scheme=None, **kwargs):
+        return RobotsTxt(self.base_url(scheme), **kwargs)
