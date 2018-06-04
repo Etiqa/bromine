@@ -45,7 +45,7 @@ class RobotsTxt(object):
                 continue
             line = re.sub(r'[\s]+\#.*', '', line)
             if line:
-                split = line.split(':')
+                split = line.split(':', 1)
                 if len(split) != 2:
                     continue
                 field, value = [x.strip() for x in split]
