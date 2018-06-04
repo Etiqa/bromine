@@ -31,7 +31,7 @@ class XPath(LocatorBy):
 
     def item(self, index):
         cls = type(self)
-        value = '(%s)[%s]' % (self.value, index)
+        value = '(%s)[%s]' % (self._value, index)
         return cls(value)
 
 

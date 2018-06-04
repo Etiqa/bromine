@@ -2,6 +2,7 @@ import pytest
 
 from bromine import WebApplication, WebPage
 from bromine.exceptions import NoSuchPageError
+from bromine.utils.robots_txt import RobotsTxt
 
 
 @pytest.fixture(name='app')
@@ -56,7 +57,7 @@ def test_current_page(app):
     assert app.current_page is page
 
 
-def test_current_page_must_be_registered(app): #pylint: disable=invalid-name
+def test_current_page_must_be_registered(app): # pylint: disable=invalid-name
     with pytest.raises(NoSuchPageError):
         app.current_page = WebPage('/unregistered', None)
 
@@ -75,3 +76,22 @@ def test_inconsistent_application_error(app): # pylint: disable=invalid-name
     another_app = WebApplication(None, None)
     with pytest.raises(ValueError, match="Page's application is inconsistent"):
         app.add_page(WebPage(another_app, '/'))
+
+
+class TestRobotsTxt(object):
+    # pylint: disable=no-self-use
+
+    def test_robots_txt(self, app):
+        assert isinstance(app.robots_txt(), RobotsTxt)
+
+    @pytest.mark.parametrize('scheme,robots_url', (
+        (None, 'https://www.example.com/robots.txt'),
+        ('http', 'http://www.example.com/robots.txt'),
+        ('https', 'https://www.example.com/robots.txt'),
+    ))
+    def test_robots_file_url(self, app, scheme, robots_url):
+        assert app.robots_txt(scheme).url == robots_url
+
+    def test_robots_txt_extra_params(self, app):
+        rbt = app.robots_txt(verify_ssl=False)
+        assert rbt.__dict__['_verify_ssl'] is False

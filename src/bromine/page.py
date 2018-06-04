@@ -4,7 +4,7 @@ Web page model.
 
 from six.moves.urllib.parse import urljoin
 
-from .utils import url_with_given_scheme
+from .utils.url import url_with_given_scheme
 
 
 class WebPage(object):

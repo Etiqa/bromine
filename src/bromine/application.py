@@ -3,7 +3,8 @@ Web application model.
 """
 
 from .exceptions import NoSuchPageError
-from .utils import url_with_given_scheme, RobotsTxt
+from .utils.url import url_with_given_scheme
+from .utils.robots_txt import RobotsTxt
 
 
 class Application(object):
