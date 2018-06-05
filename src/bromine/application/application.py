@@ -2,9 +2,9 @@
 Web application model.
 """
 
-from .exceptions import NoSuchPageError
-from .utils.url import url_with_given_scheme
-from .utils.robots_txt import RobotsTxt
+from ..exceptions import NoSuchPageError
+from ..utils.url import url_with_given_scheme
+from ..utils.robots_txt import RobotsTxt
 
 
 class Application(object):
@@ -14,8 +14,8 @@ class Application(object):
 class WebApplication(Application):
     """Represents a Web Application."""
 
-    def __init__(self, base_url, browser):
-        self._base_url = base_url
+    def __init__(self, environment, browser):
+        self._environment = environment
         self._browser = browser
         self._current_page = None
         self._pages = {}
@@ -25,7 +25,7 @@ class WebApplication(Application):
         pass
 
     def base_url(self, scheme=None):
-        return url_with_given_scheme(self._base_url, scheme)
+        return url_with_given_scheme(self._environment.base_url, scheme)
 
     @property
     def browser(self):

@@ -1,5 +1,5 @@
 import pytest
-from bromine import WebApplication
+from bromine import WebApplication, Environment
 
 
 test_base_urls = ( # pylint: disable=invalid-name
@@ -12,17 +12,17 @@ test_base_urls = ( # pylint: disable=invalid-name
 
 @pytest.mark.parametrize('base_url', test_base_urls)
 def test_base_url(base_url):
-    app = WebApplication(base_url, None)
+    app = WebApplication(Environment(base_url), None)
     assert app.base_url() == base_url
 
 
 @pytest.mark.parametrize('base_url', test_base_urls)
 def test_get_https_base_url(base_url):
-    app = WebApplication(base_url, None)
+    app = WebApplication(Environment(base_url), None)
     assert app.base_url('https') == 'https://www.example.com'
 
 
 @pytest.mark.parametrize('base_url', test_base_urls)
 def test_get_http_base_url(base_url):
-    app = WebApplication(base_url, None)
+    app = WebApplication(Environment(base_url), None)
     assert app.base_url('http') == 'http://www.example.com'

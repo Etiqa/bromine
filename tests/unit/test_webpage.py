@@ -1,7 +1,7 @@
 import pytest
 from selenium.webdriver import Remote as SeWebDriver
 
-from bromine import WebApplication, WebPage
+from bromine import WebApplication, Environment, WebPage
 
 from .. import Mock, PropertyMock
 
@@ -26,7 +26,7 @@ from .. import Mock, PropertyMock
     ('www.example.com', 'other.domain.com/some/path', 'other.domain.com/some/path')
 ))
 def test_full_page_url(base_url, page_url, expected):
-    app = WebApplication(base_url, None)
+    app = WebApplication(Environment(base_url), None)
     page = WebPage(app, page_url)
     assert page.url() == expected
 

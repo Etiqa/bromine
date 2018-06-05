@@ -2,7 +2,7 @@ import pytest
 
 from selenium.webdriver import Remote as SeWebDriver
 
-from bromine import WebPage, WebApplication, WebElement
+from bromine import WebApplication, Environment, WebPage, WebElement
 
 from .. import Mock, PropertyMock
 
@@ -10,7 +10,7 @@ from .. import Mock, PropertyMock
 @pytest.fixture(name='page')
 def page_fixture():
     browser = Mock(spec=SeWebDriver)
-    app = WebApplication('https://www.example.com', browser)
+    app = WebApplication(Environment('https://www.example.com'), browser)
     page = WebPage(app, '/some/page')
     return page
 
@@ -53,7 +53,7 @@ def test_add_elements():
     class MyPage(WebPage):
         def _add_elements(self):
             self.some_element = WebElement(self.browser, '')
-    app = WebApplication('https://www.example.com', object())
+    app = WebApplication(Environment('https://www.example.com'), object())
     page = MyPage(app, '/some/page')
     assert page.some_element._browser is page.browser # pylint: disable=protected-access
 

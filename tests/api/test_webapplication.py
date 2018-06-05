@@ -1,6 +1,6 @@
 import pytest
 
-from bromine import WebApplication, WebPage
+from bromine import WebApplication, Environment, WebPage
 from bromine.exceptions import NoSuchPageError
 from bromine.utils.robots_txt import RobotsTxt
 
@@ -10,7 +10,7 @@ def app_fixture():
     class MyWebApp(WebApplication):
         def _add_pages(self):
             self.add_page(WebPage(self, '/some/page', name='some page'))
-    app = MyWebApp('https://www.example.com', object())
+    app = MyWebApp(Environment('https://www.example.com'), object())
     return app
 
 
