@@ -27,11 +27,15 @@ def test_http_url(page):
     assert page.url('http') == 'http://www.example.com/some/page'
 
 
+def test_relative_url(page):
+    assert page.relative_url == '/some/page'
+
+
 def test_browser(page):
     assert page.browser is page.application.browser
 
 
-def test_default_name_is_url(page):
+def test_default_name_is_relative_url(page): # pylint: disable=invalid-name
     assert page.name == '/some/page'
 
 
