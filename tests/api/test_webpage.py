@@ -3,6 +3,7 @@ import pytest
 from selenium.webdriver import Remote as SeWebDriver
 
 from bromine import WebApplication, Environment, WebPage, WebElement
+from bromine.utils.url import urlsplit
 
 from .. import Mock, PropertyMock
 
@@ -29,6 +30,22 @@ def test_http_url(page):
 
 def test_relative_url(page):
     assert page.relative_url == '/some/page'
+
+
+class TestOverrideBaseUrlScheme(object):
+
+    @pytest.fixture(name='https_page')
+    def http_app_with_https_page(self):
+        http_app = WebApplication(Environment('http://www.example.com'), None)
+        assert urlsplit(http_app.base_url()).scheme == 'http'
+        https_page = WebPage(http_app, '/some/page', scheme='https')
+        return https_page
+
+    def test_scheme_override(self, https_page):
+        assert urlsplit(https_page.url()).scheme == 'https'
+
+    def test_overriding_scheme_override(self, https_page):
+        assert urlsplit(https_page.url('http')).scheme == 'http'
 
 
 def test_browser(page):

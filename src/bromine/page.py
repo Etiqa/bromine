@@ -13,10 +13,11 @@ class WebPage(object):
     Web pages are grouped into a web application.
     """
 
-    def __init__(self, application, relative_url, name=None):
+    def __init__(self, application, relative_url, name=None, scheme=None):
         if not name:
             name = relative_url
         self._relative_url = relative_url
+        self._scheme = scheme
         self._name = name
         self._application = application
         self._add_elements()
@@ -44,7 +45,7 @@ class WebPage(object):
 
     def url(self, scheme=None):
         """Web page's URL."""
-        base_url = self.application.base_url() if self.application else ''
+        base_url = self.application.base_url(self._scheme) if self.application else ''
         joined_url = urljoin(base_url, self.relative_url)
         return url_with_given_scheme(joined_url, scheme)
 
