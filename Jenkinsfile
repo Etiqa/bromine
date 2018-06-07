@@ -81,7 +81,7 @@ node {
                     python3 -m venv /tmp/venv
                     . /tmp/venv/bin/activate
                     pip install --no-cache-dir -r requirements/pypi.txt
-                    twine upload --repository-url ${NEXUS_URL}/bromine/ -u $USERNAME -p $PASSWORD dist/bromine-*.whl dist/bromine-*.whl.asc
+                    twine upload --repository-url ${NEXUS_URL}/bromine/ -u $USERNAME -p $PASSWORD dist/bromine-*.whl
                     """
                 }
             }

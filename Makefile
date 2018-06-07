@@ -8,7 +8,7 @@ lint :
 
 build : clean_dist
 	python setup.py bdist_wheel --universal
-	gpg --detach-sign -a dist/bromine-*.whl
+	#gpg --detach-sign -a dist/bromine-*.whl
 
 clean_dist :
 	rm -rf src/bromine.egg-info/ build/ dist/
