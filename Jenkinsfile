@@ -21,7 +21,7 @@ node {
             """
         }
     }
-    stage('GPG Sign') {
+    /*stage('GPG Sign') {
         withCredentials([string(credentialsId: 'jenkins_gpg_0780E4BA_pwd', variable: 'PASSWORD')]) {
             sh 'gpg --detach-sign -a --batch --passphrase "$PASSWORD" dist/bromine-*.whl'
         }
@@ -31,7 +31,7 @@ node {
         gpg --dearmor <pypi_gpg_sign.pub.asc >pypi_gpg_sign.pub.pgp
         gpg --no-default-keyring --keyring ./pypi_gpg_sign.pub.pgp --verify dist/bromine-*.whl.asc
         """
-    }
+    }*/
     stage('QA - Test') {
         parallel py37: {
             docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
@@ -69,7 +69,7 @@ node {
         }
     }
     stage('QA - Lint') {
-        docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
+        docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
             sh """
             python3 -m venv /tmp/venv
             . /tmp/venv/bin/activate
