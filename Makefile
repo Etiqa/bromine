@@ -1,4 +1,4 @@
-qa : tox lint
+qa : tox #lint
 
 tox : build
 	tox --installpkg dist/bromine-*.whl
