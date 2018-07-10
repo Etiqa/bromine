@@ -2,7 +2,7 @@
 https://packaging.python.org/tutorials/distributing-packages/
 """
 
-import codecs
+import io
 import os
 import re
 from setuptools import setup, find_packages
@@ -16,7 +16,7 @@ BASEDIR = os.path.dirname(__file__)
 
 
 def read(file_path):
-    with codecs.open(file_path, 'rU', encoding='utf-8') as fin:
+    with io.open(file_path, 'rU', encoding='utf-8') as fin:
         return fin.read()
 
 
