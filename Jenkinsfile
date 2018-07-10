@@ -11,7 +11,7 @@ node {
         sh 'sed -i "s/COMMIT/$(git log -n 1 --pretty=format:\"%h\")/g" src/bromine/_version.py'
     }
     stage('Bdist Wheel') {
-        docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
+        docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
             sh """
             python3 -m venv /tmp/venv
             . /tmp/venv/bin/activate
@@ -33,7 +33,18 @@ node {
         """
     }
     stage('QA - Test') {
-        parallel py36: {
+        parallel py37: {
+            docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
+                stage('Tox -e py37') {
+                    sh """
+                    python3 -m venv /tmp/venv
+                    . /tmp/venv/bin/activate
+                    pip install --no-cache-dir -r requirements/qa.txt
+                    tox -e py37 --installpkg dist/bromine-*.whl --workdir /tmp/venv37
+                    """
+                }
+            }
+        }, py36: {
             docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
                 stage('Tox -e py36') {
                     sh """
@@ -58,7 +69,7 @@ node {
         }
     }
     stage('QA - Lint') {
-        docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
+        docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
             sh """
             python3 -m venv /tmp/venv
             . /tmp/venv/bin/activate
@@ -70,7 +81,7 @@ node {
 
     if (env.BRANCH_NAME.startsWith("development/") || env.BRANCH_NAME.startsWith("release/")) {
         stage('Publish to Private Nexus') {
-            docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
+            docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
                 withCredentials([
                     usernamePassword(credentialsId: 'Nexus',
                                      usernameVariable: 'USERNAME',
