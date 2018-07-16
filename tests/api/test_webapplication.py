@@ -59,7 +59,7 @@ def test_current_page(app):
 
 def test_current_page_must_be_registered(app): # pylint: disable=invalid-name
     with pytest.raises(NoSuchPageError):
-        app.current_page = WebPage('/unregistered', None)
+        app.current_page = WebPage(app, '/unregistered', None)
 
 
 def test_add_page_without_name(app):
