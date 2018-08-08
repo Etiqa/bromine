@@ -69,7 +69,7 @@ node {
         }
     }
     stage('QA - Lint') {
-        docker.image('python:3.6').inside('-v /etc/passwd:/etc/passwd') {
+        docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
             sh """
             python3 -m venv /tmp/venv
             . /tmp/venv/bin/activate

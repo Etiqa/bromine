@@ -2,8 +2,7 @@ import pytest
 
 from selenium.webdriver import Remote as SeWebDriver
 
-from bromine import WebApplication, Environment, WebPage, WebElement
-from bromine.utils.url import urlsplit
+from bromine import WebPage
 
 from .. import Mock, PropertyMock
 
@@ -11,79 +10,57 @@ from .. import Mock, PropertyMock
 @pytest.fixture(name='page')
 def page_fixture():
     browser = Mock(spec=SeWebDriver)
-    app = WebApplication(Environment('https://www.example.com'), browser)
-    page = WebPage(app, '/some/page')
+    page = WebPage('https://www.example.com/some/page', browser)
     return page
 
 
+@pytest.fixture(name='different_url')
+def different_url_fixture(page):
+    different_url = page.url.replace('some', 'another')
+    assert different_url != page.url
+    return different_url
+
+
 def test_url(page):
-    assert page.url() == 'https://www.example.com/some/page'
-
-
-def test_https_url(page):
-    assert page.url('https') == 'https://www.example.com/some/page'
-
-
-def test_http_url(page):
-    assert page.url('http') == 'http://www.example.com/some/page'
-
-
-def test_relative_url(page):
-    assert page.relative_url == '/some/page'
-
-
-class TestOverrideBaseUrlScheme(object):
-
-    @pytest.fixture(name='https_page')
-    def http_app_with_https_page(self):
-        http_app = WebApplication(Environment('http://www.example.com'), None)
-        assert urlsplit(http_app.base_url()).scheme == 'http'
-        https_page = WebPage(http_app, '/some/page', scheme='https')
-        return https_page
-
-    def test_scheme_override(self, https_page):
-        assert urlsplit(https_page.url()).scheme == 'https'
-
-    def test_overriding_scheme_override(self, https_page):
-        assert urlsplit(https_page.url('http')).scheme == 'http'
+    assert page.url == 'https://www.example.com/some/page'
 
 
 def test_browser(page):
-    assert page.browser is page.application.browser
-
-
-def test_default_name_is_relative_url(page): # pylint: disable=invalid-name
-    assert page.name == '/some/page'
-
-
-def test_name():
-    page = WebPage(None, 'https://www.example.com/some/page', name='some page')
-    assert page.name == 'some page'
-
-
-def test_name_is_readonly(page):
-    with pytest.raises(AttributeError, match="can't set attribute"):
-        page.name = 'some page'
-
-
-def test_add_elements():
-    class MyPage(WebPage):
-        def _add_elements(self):
-            self.some_element = WebElement(self.browser, '')
-    app = WebApplication(Environment('https://www.example.com'), object())
-    page = MyPage(app, '/some/page')
-    assert page.some_element._browser is page.browser # pylint: disable=protected-access
+    assert page.browser is not None
 
 
 def test_title(page):
-    mocked_title = PropertyMock(return_value='some title')
-    type(page.browser).title = mocked_title
+    _mock_browser_property(page.browser, 'title', 'some title')
     assert page.title == 'some title'
 
 
 def test_go_to(page):
-    assert hasattr(page, 'go_to')
+    assert not page.is_current_page()
+    _mock_browser_get(page.browser, page.url)
+    page.go_to()
+    assert page.is_current_page()
+
+
+def test_go_to_assertion(page, different_url):
+    _mock_browser_get(page.browser, different_url)
+    with pytest.raises(AssertionError, match=different_url):
+        page.go_to()
 
 
 def test_is_current_page(page):
-    assert hasattr(page, 'is_current_page')
+    _mock_browser_property(page.browser, 'current_url', page.url)
+    assert page.is_current_page()
+
+
+def test_is_not_current_page(page, different_url):
+    _mock_browser_property(page.browser, 'current_url', different_url)
+    assert not page.is_current_page()
+
+
+def _mock_browser_property(browser, key, value):
+    setattr(type(browser), key, PropertyMock(return_value=value))
+
+
+def _mock_browser_get(browser, final_url):
+    mock_current_url = lambda *_: _mock_browser_property(browser, 'current_url', final_url)
+    browser.get.side_effect = mock_current_url

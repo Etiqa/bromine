@@ -61,3 +61,15 @@ def test_comment_line(line):
 ))
 def test_inline_comment(line):
     assert RobotsTxt.parse_directives(line) == (('Field', 'value'), )
+
+
+def test_directives_order():
+    ordering_1 = RobotsTxt.parse_directives(dedent("""\
+        Directive1: value1
+        Directive2: value2
+    """))
+    ordering_2 = RobotsTxt.parse_directives(dedent("""\
+        Directive2: value2
+        Directive1: value1
+    """))
+    assert ordering_1 == tuple(reversed(ordering_2))

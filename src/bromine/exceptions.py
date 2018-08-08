@@ -2,20 +2,12 @@
 Global Bromine exception and warning classes.
 """
 
-from selenium.common.exceptions import (NoSuchElementException,
+from selenium.common.exceptions import (NoSuchElementException,  # pylint: disable=unused-import
                                         StaleElementReferenceException)
 
 
 class BromineException(Exception):
     """Base class for all Bromine custom exceptions."""
-
-
-class NoSuchObjectError(BromineException):
-    """Base error for queries returning no results"""
-
-
-class NoSuchPageError(NoSuchObjectError):
-    """Page is not registered with given application."""
 
 
 class MultipleObjectsFoundError(BromineException):

@@ -1,61 +1,43 @@
-"""
-Web page model.
-"""
-
-from six.moves.urllib.parse import urljoin
-
-from .utils.url import url_with_given_scheme
+import six
 
 
 class WebPage(object):
-    """Represents a Web Page.
 
-    Web pages are grouped into a web application.
-    """
-
-    def __init__(self, application, relative_url, name=None, scheme=None):
-        if not name:
-            name = relative_url
-        self._relative_url = relative_url
-        self._scheme = scheme
-        self._name = name
-        self._application = application
-        self._add_elements()
-
-    def _add_elements(self):
-        """Override this method to declare this page's elements."""
-
-    @property
-    def application(self):
-        return self._application
+    def __init__(self, url, browser):
+        self._url = url
+        self._browser = browser
 
     @property
     def browser(self):
         """Instance of Selenium WebDriver."""
-        return self.application.browser if self.application else None
+        return self._browser
 
     @property
-    def name(self):
-        """Optional name to identify this web page."""
-        return self._name
-
-    @property
-    def relative_url(self):
-        return self._relative_url
-
-    def url(self, scheme=None):
+    def url(self):
         """Web page's URL."""
-        base_url = self.application.base_url(self._scheme) if self.application else ''
-        joined_url = urljoin(base_url, self.relative_url)
-        return url_with_given_scheme(joined_url, scheme)
+        return self._url
 
     def go_to(self):
-        self.browser.get(self.url())
-        assert self.is_current_page()
+        self.browser.get(self.url)
+        is_current_url = self.is_current_page()
+        assert is_current_url, is_current_url.current_url
 
     def is_current_page(self):
-        return self.browser.current_url == self.url()
+        return _CurrentUrlTest(self.browser.current_url, self.url)
 
     @property
     def title(self):
         return self.browser.title
+
+
+class _CurrentUrlTest(object):
+
+    def __init__(self, current_url, expected_url):
+        self.current_url = current_url
+        self.expected_url = expected_url
+
+    def __bool__(self):
+        return self.current_url == self.expected_url
+
+    if six.PY2:
+        __nonzero__ = __bool__
