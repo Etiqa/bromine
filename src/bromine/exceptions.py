@@ -10,9 +10,5 @@ class BromineException(Exception):
     """Base class for all Bromine custom exceptions."""
 
 
-class MultipleObjectsFoundError(BromineException):
-    """Base error for queries returning multiple results, while only one was expected."""
-
-
-class MultipleElementsFoundError(MultipleObjectsFoundError):
+class MultipleElementsFoundError(BromineException):
     """Multiple instances of a DOM element were found, but only one was expected."""
