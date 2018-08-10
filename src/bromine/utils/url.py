@@ -2,9 +2,9 @@ from six.moves.urllib.parse import urlsplit, urlunsplit
 
 
 def _url_with_scheme(url, scheme):
-    parts = list(urlsplit(url))
-    parts[0] = scheme
-    return urlunsplit(parts)
+    return urlunsplit(
+        urlsplit(url)._replace(scheme=scheme)
+    )
 
 
 def http(url):
