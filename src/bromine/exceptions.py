@@ -3,7 +3,8 @@ Global Bromine exception and warning classes.
 """
 
 from selenium.common.exceptions import (NoSuchElementException,  # pylint: disable=unused-import
-                                        StaleElementReferenceException)
+                                        StaleElementReferenceException,
+                                        TimeoutException)
 
 
 class BromineException(Exception):
