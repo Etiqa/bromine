@@ -3,7 +3,7 @@ import pytest
 from selenium.webdriver import Remote as SeWebDriver
 
 from bromine import WebElement
-from bromine.element.locator import Locator
+from bromine.element import Locator
 from bromine.exceptions import TimeoutException
 from bromine.utils.wait import Wait
 
