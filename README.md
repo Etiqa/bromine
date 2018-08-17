@@ -6,8 +6,8 @@ To write actual tests you'll keep using your testing framework of choice.
 Bromine focuses on **end-to-end tests**: it relies on [Selenium][1] to exercise a
 *real* system, not to simulate it.
 
-While Selenium serves as the essential foundation enabling end-to-end testing,  
-WebDriver alone offers too low a level of abstraction.
+While Selenium serves as the essential foundation enabling end-to-end testing,
+WebDriver alone offers too low a level of abstraction.  
 When we *describe* some behaviour that our system must exhibit, we usually think  
 about how users interact with the UI and how this one is expected to respond to
 those interactions. We do *not* think about the browser as the main actor, but
