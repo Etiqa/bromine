@@ -30,24 +30,25 @@ def version():
 
 
 def long_description():
-    return read(os.path.join(BASEDIR, 'README.rst'))
+    return read(os.path.join(BASEDIR, 'README.md'))
 
 
 setup(
     name=PKG_NAME,
     version=version(),
-    description='',
+    description='A high-level web testing library based on Selenium and PageObject Pattern',
     long_description=long_description(),
-    long_description_content_type='text/x-rst',
-    url='',
+    long_description_content_type='text/markdown',
+    url='https://github.com/Etiqa/bromine',
     author='Etiqa s.r.l.',
     author_email='',
     license='2-clause BSD License',
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Quality Assurance',
         'Topic :: Software Development :: Testing',
+        'Topic :: Software Development :: Libraries',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
