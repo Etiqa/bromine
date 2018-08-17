@@ -41,10 +41,10 @@ def test_go_to(page):
     assert page.is_current_page()
 
 
-def test_go_to_assertion(page, different_url):
+def test_go_to_does_not_assert_current_page(page, different_url):
     _mock_browser_get(page.browser, different_url)
-    with pytest.raises(AssertionError, match=different_url):
-        page.go_to()
+    page.go_to()
+    assert not page.is_current_page()
 
 
 def test_is_current_page(page):

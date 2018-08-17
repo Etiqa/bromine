@@ -19,8 +19,6 @@ class WebPage(object):
 
     def go_to(self):
         self.browser.get(self.url)
-        is_current_url = self.is_current_page()
-        assert is_current_url, is_current_url.current_url
 
     def is_current_page(self):
         return _CurrentUrlTest(self.browser.current_url, self.url)
