@@ -8,7 +8,7 @@ Bromine focuses on **end-to-end tests**: it relies on [Selenium][1] to exercise 
 
 While Selenium serves as the essential foundation enabling end-to-end testing,
 WebDriver alone offers too low a level of abstraction.  
-When we *describe* some behaviour that our system must exhibit, we usually think  
+When we *describe* some behaviour that our system must exhibit, we usually think
 about how users interact with the UI and how this one is expected to respond to
 those interactions. We do *not* think about the browser as the main actor, but
 indeed as part of the application. In the context of Object-Oriented Programming,
