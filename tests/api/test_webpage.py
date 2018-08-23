@@ -57,6 +57,14 @@ def test_is_not_current_page(page, different_url):
     assert not page.is_current_page()
 
 
+@pytest.mark.skip(reason="TODO: this test has not been implemented yet") # TODO: write test
+def test_size(page):
+    size = page.size
+    assert hasattr(size, 'total')
+    assert hasattr(size, 'visible')
+    assert isinstance(size, type(page).size) # this is to test accessing size from Page class
+
+
 def _mock_browser_property(browser, key, value):
     setattr(type(browser), key, PropertyMock(return_value=value))
 

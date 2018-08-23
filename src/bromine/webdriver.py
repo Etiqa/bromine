@@ -1,2 +1,0 @@
-class WebDriverMixin(object):
-    pass

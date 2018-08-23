@@ -64,9 +64,11 @@ setup(
     package_data={},
     data_files=[],
     install_requires=[
-        'six',
-        'selenium',
+        'Pillow',
+        'PyHamcrest',
         'requests',
+        'selenium',
+        'six',
     ],
     extras_require={},
     python_requires=', '.join([

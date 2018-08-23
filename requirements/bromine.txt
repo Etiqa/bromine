@@ -1,4 +1,6 @@
 # Product dependencies
-six
-selenium
+Pillow
+PyHamcrest
 requests
+selenium
+six
