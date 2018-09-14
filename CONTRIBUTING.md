@@ -1,6 +1,8 @@
 # Style guides and code conventions references
 [Python's PEP 8][1]
+
 [Notes about Sphinx syntax for function descriptions and Docstrings readability][2]
+
 [Google Python Style Guide referenced by the previous link][3]
 
 
