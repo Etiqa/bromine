@@ -1,0 +1,13 @@
+TO-DOs
+
+1: remove Page.go_to()
+2: make browser property protected in Application, Page, WebElement
+3: remove exceptions module and move each exception to the one module where it's used
+4: driver mixin: reconsider window strategy -> builder pattern
+5: isolate Selenium
+6: Url class
+7: cleanup tests
+8: window, page size: separate width and height methods for easier subclassing
+9: remove/reduce “#pylint: disable”
+10: clean up tests
+11: rename CurrentUrlTest to Equal, move it to utils, make it more generic
