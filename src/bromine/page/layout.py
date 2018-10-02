@@ -71,7 +71,7 @@ class Tile(object):
     def __init__(self, page, margin_top, page_offset, size):
         self._page = page
         self._window = page.window
-        self._content = Rectangle(*page_offset, *size)
+        self._content = Rectangle(page_offset.x, page_offset.y, size.width, size.height)
         self._margin_top = RectSize(0, margin_top)
 
     @property
