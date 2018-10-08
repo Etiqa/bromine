@@ -13,6 +13,9 @@ class Point(namedtuple('Point', ('x', 'y'))):
     def __neg__(self):
         return self.__class__(-self.x, -self.y)
 
+    def __rmul__(self, scalar_value):
+        return self.__class__(scalar_value * self.x, scalar_value * self.y)
+
 
 class RectSize(namedtuple('RectSize', ('width', 'height')), Point):
     """RectSize is just a Point with 'x', 'y' renamed to 'width', 'height'.
@@ -67,5 +70,17 @@ class Rectangle(namedtuple('Rectangle', ('x', 'y', 'width', 'height'))):
     def bottom(self):
         return self.top + self.height -1
 
-    def as_PIL_box(self):
-        return (self.x, self.y, self.x + self.width, self.y + self.height)
+    @classmethod
+    def from_corner_and_size(cls, upper_left_corner, size):
+        x, y = upper_left_corner
+        width, height = size
+        return cls(x, y, width, height)
+
+
+def PIL_box(rectangle):
+    """Represent a Rectangle in PIL's Coordinate System.
+
+    See https://pillow.readthedocs.io/en/stable/handbook/concepts.html#coordinate-system
+    """
+    x, y, width, height = rectangle
+    return (x, y, x + width, y + height)

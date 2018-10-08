@@ -1,7 +1,6 @@
 from hamcrest import assert_that, equal_to
 
 from bromine.utils.geometry import Rectangle, RectSize
-from bromine.utils.image import ScreenshotFromImage
 
 
 class SimpleVerticalLayout(object):
@@ -44,7 +43,7 @@ class SimpleVerticalLayout(object):
         return self._build_tile(0, 0, tile_height)
 
     def _build_tile(self, top_margin, top, height):
-        return Tile(self._page, top_margin, (0, top), (self._width, height))
+        return PagePortion(self._page, (0, top), (self._width, height), (0, top_margin))
 
     def _is_last_tile(self, remaining_scroll):
         return remaining_scroll <= self._max_tile_height - self._bar_shadow_height
@@ -65,17 +64,15 @@ class SimpleVerticalLayout(object):
         return self._build_tile(margin, offset, height)
 
 
-# TODO: check responsibilities allocation among Tile, Layout, VisiblePortionScreenshot
-class Tile(object):
+class PagePortion(object):
 
-    def __init__(self, page, margin_top, page_offset, size):
+    def __init__(self, page, page_offset, size, margin):
         self._page = page
-        self._window = page.window
-        self._content = Rectangle(page_offset.x, page_offset.y, size.width, size.height)
-        self._margin_top = RectSize(0, margin_top)
+        self._content = Rectangle.from_corner_and_size(page_offset, size)
+        self._margin = RectSize(*margin)
 
     @property
-    def upper_left_corner(self):
+    def page_offset(self):
         return self._content.upper_left_corner
 
     @property
@@ -90,23 +87,11 @@ class Tile(object):
     def bottom(self):
         return self._content.bottom
 
+    @property
+    def margin(self):
+        return self._margin
+
     def scroll_into_view(self):
-        in_view_position = self._content.upper_left_corner - self._margin_top
+        in_view_position = self.page_offset - self._margin
         self._page.scroll.to(*in_view_position)
         assert_that(self._page.scroll.level, equal_to(in_view_position))
-
-    def get_screenshot(self):
-        window_image = self._window.get_screenshot().as_image()
-        crop = self._get_crop_box()
-        tile_image = window_image.crop(crop)
-        return ScreenshotFromImage(tile_image)
-
-    def _get_crop_box(self):
-        address_bar_height_in_points = self._window.address_bar_height
-        pixels_per_point = self._window.virtual_pixel_ratio
-        address_bar_height_in_pixels = address_bar_height_in_points * pixels_per_point
-        margin_in_pixels = self._margin_top.height * pixels_per_point + address_bar_height_in_pixels
-        size_in_points = self._content.size
-        size_in_pixels = RectSize(size_in_points.width * pixels_per_point,
-                                  size_in_points.height * pixels_per_point)
-        return Rectangle(0, margin_in_pixels, *size_in_pixels).as_PIL_box()
