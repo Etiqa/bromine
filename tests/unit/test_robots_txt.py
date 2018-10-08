@@ -57,7 +57,7 @@ def test_comment_line(line):
 @pytest.mark.parametrize('line', (
     'Field: value # some inline comment',
     'Field: value \t # some inline comment',
-    pytest.mark.xfail(reason='no space before # character')('Field: value# some inline comment'),
+    pytest.param('Field: value# some inline comment', marks=pytest.mark.xfail(reason='no space before # character'))
 ))
 def test_inline_comment(line):
     assert RobotsTxt.parse_directives(line) == (('Field', 'value'), )

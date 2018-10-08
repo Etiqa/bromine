@@ -7,7 +7,7 @@ input_urls = pytest.mark.parametrize('url', (  # pylint: disable=invalid-name
     'http://www.example.com/',
     'https://www.example.com/',
     '//www.example.com/',
-    pytest.mark.xfail(reason='url is not absolute')('www.example.com/')
+    pytest.param('www.example.com/', marks=pytest.mark.xfail(reason='url is not absolute'))
 ))
 
 
