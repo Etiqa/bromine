@@ -3,3 +3,4 @@
 pylint
 tox !=3.5.0, !=3.5.1
 #git+https://github.com/tox-dev/tox.git@master#egg=tox
+coverage

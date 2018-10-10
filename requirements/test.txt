@@ -1,3 +1,5 @@
 pytest
+pytest-cov
+
 # https://www.python.org/dev/peps/pep-0440/#version-specifiers
 mock; python_version < "3.3"

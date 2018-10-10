@@ -68,6 +68,18 @@ node {
             }
         }
     }
+    stage('QA - Coverage') {
+        docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
+            sh """
+            python3 -m venv /tmp/venv
+            . /tmp/venv/bin/activate
+            pip install --no-cache-dir -r requirements/qa.txt
+            rm .coverage
+            coverage combine .coverage_*
+            coverage report -m
+            """
+        }
+    }
     stage('QA - Lint') {
         docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
             sh """

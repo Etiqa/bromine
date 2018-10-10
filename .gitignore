@@ -19,3 +19,8 @@ bromine.egg-info/
 
 # sphinx
 /docs/_build/
+
+# coverage.py
+/.coverage
+/.coverage_*
+/htmlcov/
