@@ -16,7 +16,7 @@ BASEDIR = os.path.dirname(__file__)
 
 
 def read(file_path):
-    with io.open(file_path, 'rU', encoding='utf-8') as fin:
+    with io.open(file_path, 'r', encoding='utf-8') as fin:
         return fin.read()
 
 
