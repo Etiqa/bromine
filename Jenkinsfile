@@ -74,7 +74,7 @@ node {
             python3 -m venv /tmp/venv
             . /tmp/venv/bin/activate
             pip install --no-cache-dir -r requirements/qa.txt
-            rm .coverage
+            rm -f .coverage
             coverage combine .coverage_*
             coverage report -m
             """
