@@ -155,7 +155,7 @@ class ElementCollection(object):
         self._element_factory = element_factory
 
     def __iter__(self):
-        dom_elements = self._locator.find_elements(self._browser)
+        dom_elements = self._locator(self._browser)
         return (self._instantiate_item(i, el) for i, el in enumerate(dom_elements))
 
     def _instantiate_item(self, index, dom_element):
