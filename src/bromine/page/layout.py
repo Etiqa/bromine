@@ -1,6 +1,8 @@
 from hamcrest import assert_that, equal_to
 
 from bromine.utils.geometry import Rectangle, RectSize
+from bromine.utils.wait import Wait
+from selenium.common.exceptions import TimeoutException
 
 
 class SimpleVerticalLayout(object):
@@ -94,4 +96,9 @@ class PagePortion(object):
     def scroll_into_view(self):
         in_view_position = self.page_offset - self._margin
         self._page.scroll.to(*in_view_position)
+        has_scrolled = lambda : self._page.scroll.level == in_view_position
+        try:
+            Wait(2, poll_frequency=0.01).until(has_scrolled)
+        except TimeoutException:
+            pass
         assert_that(self._page.scroll.level, equal_to(in_view_position))

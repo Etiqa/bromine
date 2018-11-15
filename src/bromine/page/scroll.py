@@ -15,20 +15,21 @@ class PageScroller(object):
         ''')
 
     def by(self, width=None, height=None):
-        scroll_options = {}
+        scroll_options = {'top': 0, 'left': 0}
         if width is not None:
             scroll_options['left'] = width
         if height is not None:
             scroll_options['top'] = height
-        self._javascript('window.scrollBy(arguments[0])', scroll_options)
+        self._javascript('window.scrollBy({},{})'.format(scroll_options['left'],scroll_options['top']))
 
     def to(self, x=None, y=None):
-        scroll_options = {}
+        level = self.level
+        scroll_options = {'top': level.height, 'left': level.width}
         if x is not None:
             scroll_options['left'] = x
         if y is not None:
             scroll_options['top'] = y
-        self._javascript('window.scrollTo(arguments[0])', scroll_options)
+        self._javascript('window.scrollTo({},{})'.format(scroll_options['left'],scroll_options['top']))
 
     def to_upper_left_corner(self):
         self.to(0, 0)
