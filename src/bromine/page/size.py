@@ -26,7 +26,9 @@ class Html5DocumentSize(object):
     @RectSize.wrapped
     def visible(self):
         return self.__javascript('''
-            documentElement[clientDimension]
+            Math.min(
+                documentElement[clientDimension],
+                windowInnerDimension)
         ''')
 
     def __javascript(self, size_definition):
@@ -37,6 +39,7 @@ class Html5DocumentSize(object):
                 var clientDimension = "client" + name;
                 var scrollDimension = "scroll" + name;
                 var offsetDimension = "offset" + name;
+                var windowInnerDimension = window["inner" + name];
                 return (%s);
             }
             return [dimension("Width"), dimension("Height")];
