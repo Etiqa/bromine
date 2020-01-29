@@ -95,7 +95,7 @@ node {
         stage('Publish to Private Nexus') {
             docker.image('python:3.8').inside('-v /etc/passwd:/etc/passwd') {
                 withCredentials([
-                    usernamePassword(credentialsId: 'Nexus',
+                    usernamePassword(credentialsId: 'nexus-id',
                                      usernameVariable: 'USERNAME',
                                      passwordVariable: 'PASSWORD'),
                     string(credentialsId: 'nexus_url', variable: 'NEXUS_URL')
