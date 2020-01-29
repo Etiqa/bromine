@@ -50,11 +50,11 @@ setup(
         'Topic :: Software Development :: Testing',
         'Topic :: Software Development :: Libraries',
         'License :: OSI Approved :: BSD License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+
     ],
     keywords='',
     project_urls={},
@@ -72,13 +72,7 @@ setup(
     ],
     extras_require={},
     python_requires=', '.join([
-        '>=2.7',
-        '!=3.0.*',
-        '!=3.1.*',
-        '!=3.2.*',
-        '!=3.3.*',
-        '!=3.4.*',
-        '!=3.5.*',
+        '>=3.6',
         '<4',
     ]),
     entry_points={}

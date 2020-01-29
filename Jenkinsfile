@@ -33,7 +33,18 @@ node {
         """
     }*/
     stage('QA - Test') {
-        parallel py37: {
+        parallel py38: {
+            docker.image('python:3.8').inside('-v /etc/passwd:/etc/passwd') {
+                stage('Tox -e py38') {
+                    sh """
+                    python3 -m venv /tmp/venv
+                    . /tmp/venv/bin/activate
+                    pip install --no-cache-dir -r requirements/qa.txt
+                    tox -e py38 --installpkg dist/bromine-*.whl --workdir /tmp/venv38
+                    """
+                }
+            }
+        }, py37: {
             docker.image('python:3.7').inside('-v /etc/passwd:/etc/passwd') {
                 stage('Tox -e py37') {
                     sh """
@@ -52,17 +63,6 @@ node {
                     . /tmp/venv/bin/activate
                     pip install --no-cache-dir -r requirements/qa.txt
                     tox -e py36 --installpkg dist/bromine-*.whl --workdir /tmp/venv36
-                    """
-                }
-            }
-        }, py27: {
-            docker.image('python:2.7').inside('-v /etc/passwd:/etc/passwd') {
-                stage('Tox -e py27') {
-                    sh """
-                    virtualenv /tmp/venv
-                    . /tmp/venv/bin/activate
-                    pip install --no-cache-dir -r requirements/qa.txt
-                    tox -e py27 --installpkg dist/bromine-*.whl --workdir /tmp/venv27
                     """
                 }
             }
