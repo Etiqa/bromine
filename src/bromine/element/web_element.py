@@ -93,59 +93,6 @@ class WebElement(Element):
                     return getattr(self.dom_element, name)(*args, **kwargs)
             return auto_refresh_wrapper
 
-    # def is_displayed(self, timeout_milliseconds=None, wait_for_animation=False):
-    #     if timeout_milliseconds is None:
-    #         timeout_milliseconds = self._display_timeout_milliseconds
-    #
-    #     if wait_for_animation:
-    #         time.sleep(self._animation_timeout_milliseconds / 1000.0)
-    #
-    #     displayed = self._is_displayed()
-    #
-    #     wait_iterations = int(math.floor(timeout_milliseconds / self.POLL_PERIOD_MILLISEC))
-    #     poll_period_sec = self.POLL_PERIOD_MILLISEC / 1000.0
-    #     while (not displayed) and (wait_iterations > 0):
-    #         wait_iterations -= 1
-    #         time.sleep(poll_period_sec)
-    #         # in a Selenium Grid environment self._is_displayed() duration
-    #         # has a significant impact that needs to be taken into account
-    #         start = datetime.now()
-    #         displayed = self._is_displayed()
-    #         end = datetime.now()
-    #         duration_millisec = (end - start).total_seconds() * 1000
-    #         correction = int(math.floor(duration_millisec / self.POLL_PERIOD_MILLISEC))
-    #         if correction > 0:
-    #             wait_iterations -= correction
-    #
-    #     return displayed
-    #
-    # def move_to_element(self):
-    #     to_perform = ActionChains(self.driver).move_to_element(self.web_element)
-    #     to_perform.perform()
-    #
-    # def double_click(self):
-    #     actions = ActionChains(self.driver)
-    #     actions.double_click(self.web_element)
-    #     actions.perform()
-    #
-    # def click(self):
-    #     try:
-    #         self.web_element.click()
-    #     except WebDriverException as e:
-    #         if re.search(r'Element.* is not clickable at point \(.*, .*\)\. Other element would receive the click', e.msg):
-    #             self.driver.execute_script("arguments[0].scrollIntoView(false);", self.web_element)
-    #             try:
-    #                 self.web_element.click()
-    #             except WebDriverException as e2:
-    #                 if re.search(r'Element.* is not clickable at point \(.*, .*\)\. Other element would receive the click', e2.msg):
-    #                     self.driver.execute_script("arguments[0].scrollIntoView(true);", self.web_element)
-    #                     self.web_element.click()
-    #                 else:
-    #                     raise
-    #         else:
-    #             raise
-
-
 # TODO: DOC: elements array must not change during iteration
 class ElementCollection(object):
 
