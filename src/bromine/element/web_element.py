@@ -97,6 +97,10 @@ class WebElement(Element):
 class ElementCollection(object):
 
     def __init__(self, browser, locator, element_factory=WebElement):
+        if not isinstance(locator, Locator):
+            if not isinstance(locator, six.string_types):
+                raise TypeError('locator must be a Locator instance or a XPath string')
+            locator = XPath(locator)
         self._locator = locator
         self._browser = browser
         self._element_factory = element_factory
