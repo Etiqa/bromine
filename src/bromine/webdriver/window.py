@@ -31,11 +31,17 @@ class Window(object):
 
     @property
     def address_bar_height(self):
-        return self._browser.address_bar_height
+        if hasattr(self._browser, 'address_bar_height'):
+            return self._browser.address_bar_height
+        else:
+            return 0
 
     @property
     def bar_shadow_height(self):
-        return self._browser.bar_shadow_height
+        if hasattr(self._browser, 'bar_shadow_height'):
+            return self._browser.bar_shadow_height
+        else:
+            return 0
 
     def get_screenshot(self):
         png_bytes = self._browser.get_screenshot_as_png()

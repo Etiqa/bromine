@@ -24,3 +24,6 @@ bromine.egg-info/
 /.coverage
 /.coverage_*
 /htmlcov/
+
+# Visual Studio Code
+.vscode/

@@ -1,9 +1,7 @@
 import pytest
 
 from selenium.webdriver import Remote as SeWebDriver
-
 from bromine import WebPage
-
 from .. import Mock, PropertyMock
 
 
