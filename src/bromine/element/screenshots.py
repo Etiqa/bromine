@@ -20,3 +20,6 @@ class ElementScreenshot(object):
 
     def _take(self):
         return self._element.get_screenshot()
+
+class ScrollableElementScreenshot(ElementScreenshot):
+    pass
