@@ -94,7 +94,9 @@ class WebElement(Element):
             return auto_refresh_wrapper
 
     def get_screenshot(self):
-        png_bytes = self._dom_element.screenshot_as_png()
+        """Return ScreenshotFromPngBytes object.
+        """
+        png_bytes = self._dom_element.screenshot_as_png
         return ScreenshotFromPngBytes(png_bytes)
 
 # TODO: DOC: elements array must not change during iteration
