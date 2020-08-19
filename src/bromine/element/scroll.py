@@ -12,7 +12,7 @@ class ElementScroller(object):
             scroll_options['left'] = width
         if height is not None:
             scroll_options['top'] = height
-        self._javascript(_SCROLL_BY.format(scroll_options['left'], scroll_options['top']), self._element)
+        self._javascript(_SCROLL_BY.format(scroll_options['left'], scroll_options['top']), self._element.dom_element)
 
     def to(self, x=None, y=None):
         raise NotImplementedError

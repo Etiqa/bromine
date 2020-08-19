@@ -11,7 +11,7 @@ class Html5ElementSize(object):
 
     @RectSize.wrapped
     def scroll_size(self):
-        return self._javascript(_SCROLL_SIZE, self._element)
+        return self._javascript(_SCROLL_SIZE, self._element.dom_element)
 
     def _javascript(self, script, *script_arguments):
         return self._browser.execute_script(script, *script_arguments)
