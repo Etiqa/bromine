@@ -9,9 +9,7 @@ from bromine.exceptions import (NoSuchElementException,
                                 StaleElementReferenceException)
 from .base import Element
 from .locator import Locator, XPath
-from ..utils.image import ScreenshotFromImage
-from tempfile import mktemp
-
+from ..utils.image import ScreenshotFromPngBytes
 
 class WebElement(Element):
     """Represents a web element inside a web page.
@@ -96,8 +94,8 @@ class WebElement(Element):
             return auto_refresh_wrapper
 
     def get_screenshot(self):
-        image = self._element.screenshot(mktemp())
-        return ScreenshotFromImage(image)
+        png_bytes = self._dom_element.screenshot_as_png()
+        return ScreenshotFromPngBytes(png_bytes)
 
 # TODO: DOC: elements array must not change during iteration
 class ElementCollection(object):
