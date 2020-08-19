@@ -29,10 +29,13 @@ class ElementScroller(object):
             scroll_options['left'] = x
         if y is not None:
             scroll_options['top'] = y
-        self._javascript('arguments[0].scrollTo({},{})'.format(scroll_options['left'],scroll_options['top']),self._element.dom_element)
+        self._javascript('arguments[0].scrollTo({},{})'.format(scroll_options['left'],scroll_options['top']), self._element.dom_element)
     
     def to_upper_left_corner(self):
         self.to(0, 0)
+
+    def into_view(self):
+        self._javascript('arguments[0]scrollIntoView();', self._element.dom_element)
 
     def _javascript(self, script, *script_arguments):
         return self._browser.execute_script(script, *script_arguments)
