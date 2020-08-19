@@ -48,6 +48,10 @@ class WebElement(Element):
     def scroll_size(self):
         return self._size.scroll_size()
 
+    @property
+    def size(self):
+        return self._size.size()
+
 
     def _find_dom_element(self):
         found_elements = self._locator(self._browser)
