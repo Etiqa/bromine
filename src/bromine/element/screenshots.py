@@ -1,7 +1,6 @@
 from hamcrest import assert_that
-
-# from bromine.utils.geometry import Rectangle, RectSize, PIL_box
-# from bromine.utils.image import Image, ScreenshotFromImage
+from bromine.utils.geometry import Rectangle, RectSize, PIL_box
+from bromine.utils.image import Image, ScreenshotFromImage
 
 
 class ElementScreenshot(object):
@@ -13,6 +12,11 @@ class ElementScreenshot(object):
         self._assert_element_is_displayed()
         return self._take()
 
+    def rectangle_in_pixels(self):
+        upper_left_corner_in_pixels = self._element.scroll.level
+        size_in_pixels = self._element.size
+        return Rectangle.from_corner_and_size(upper_left_corner_in_pixels, size_in_pixels)
+
     def _assert_element_is_displayed(self):
         assert_that(
             self._element.is_displayed(),
@@ -20,6 +24,36 @@ class ElementScreenshot(object):
 
     def _take(self):
         return self._element.get_screenshot()
+    
+
+class ElementPortionScreenshot(ElementScreenshot):
+    
+    def __init__(self, element, portion):
+        super(ElementPortionScreenshot, self).__init__(element)
+        self._portion = portion
+
+    def _take(self):
+        window_image = self._element.get_screenshot().as_image()
+        portion_image = window_image.crop(PIL_box(self.rectangle_in_pixels()))
+        return ScreenshotFromImage(portion_image)
 
 class ScrollableElementScreenshot(ElementScreenshot):
-    pass
+    def __init__(self, element):
+        super(ScrollableElementScreenshot, self).__init__(element)
+        self._pixels_per_point = self._element.driver.window.virtual_pixel_ratio
+
+    def _take(self):
+        result = self._initialize_result_image()
+        for tile in self._element.layout.tiles():
+            tile_image = self._get_tile_screenshot(tile)
+            offset = self._pixels_per_point * tile.element_offset
+            result.paste(tile_image, tuple(offset))
+        return ScreenshotFromImage(result)
+
+    def _initialize_result_image(self):
+        total_size_in_pixels = self._pixels_per_point * self._element.size
+        return Image.new('RGBA', total_size_in_pixels)
+
+    def _get_tile_screenshot(self, tile):
+        tile.scroll_into_view()
+        return ElementPortionScreenshot(self._element, tile).take().as_image()
