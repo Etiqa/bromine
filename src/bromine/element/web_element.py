@@ -10,6 +10,7 @@ from bromine.exceptions import (NoSuchElementException,
 from .base import Element
 from .locator import Locator, XPath
 from ..utils.image import ScreenshotFromPngBytes
+from .scroll import ElementScroller
 
 class WebElement(Element):
     """Represents a web element inside a web page.
@@ -34,6 +35,10 @@ class WebElement(Element):
         if self._dom_element is None:
             self._find_dom_element()
         return self._dom_element
+
+    @property
+    def scroll(self):
+        return ElementScroller(self)
 
     def _find_dom_element(self):
         found_elements = self._locator(self._browser)
