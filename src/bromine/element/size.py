@@ -1,6 +1,6 @@
 from ..utils.geometry import RectSize
 
-_SCROLL_SIZE = "return [arguments[0].scrollWidth + ',' + arguments[0].scrollHeight];"
+_SCROLL_SIZE = "return [arguments[0].scrollWidth,arguments[0].scrollHeight];"
 
 
 class Html5ElementSize(object):
