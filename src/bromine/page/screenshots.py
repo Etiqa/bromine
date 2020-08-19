@@ -47,11 +47,11 @@ class PagePortionScreenshot(PageScreenshot):
         return WindowPortion(self._window, self._portion)
 
 
-class VisiblePortionScreenshot(PagePortionScreenshot):
+class VisiblePagePortionScreenshot(PagePortionScreenshot):
 
     def __init__(self, page):
         visible_portion = self._get_visible_portion(page)
-        super(VisiblePortionScreenshot, self).__init__(page, visible_portion)
+        super(VisiblePagePortionScreenshot, self).__init__(page, visible_portion)
 
     @staticmethod
     def _get_visible_portion(page):
