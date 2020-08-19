@@ -13,16 +13,13 @@ from ..utils.image import ScreenshotFromPngBytes
 from .scroll import ElementScroller
 from .size import Html5ElementSize
 
-
-_size = Html5ElementSize
-
-
 class WebElement(Element):
     """Represents a web element inside a web page.
 
     Wraps a Selenium WebElement and adds auto-refreshing behaviour
     to avoid StaleElementReferenceException's
     """
+    _size = Html5ElementSize
 
     def __init__(self, browser, locator, dom_element=None):
         if not isinstance(locator, Locator):
