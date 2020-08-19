@@ -11,6 +11,11 @@ from .base import Element
 from .locator import Locator, XPath
 from ..utils.image import ScreenshotFromPngBytes
 from .scroll import ElementScroller
+from .size import Html5ElementSize
+
+
+_size = Html5ElementSize
+
 
 class WebElement(Element):
     """Represents a web element inside a web page.
@@ -27,6 +32,8 @@ class WebElement(Element):
         self._locator = locator
         self._browser = browser
         self._dom_element = dom_element
+        self._size = self.__class__._size(self)
+
         # TODO: consistency check: dom_element's driver is self._browser
 
     @property
@@ -39,6 +46,11 @@ class WebElement(Element):
     @property
     def scroll(self):
         return ElementScroller(self)
+
+    @property
+    def scroll_size(self):
+        return self._size.scroll_size()
+
 
     def _find_dom_element(self):
         found_elements = self._locator(self._browser)
