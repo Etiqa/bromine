@@ -9,6 +9,8 @@ from bromine.exceptions import (NoSuchElementException,
                                 StaleElementReferenceException)
 from .base import Element
 from .locator import Locator, XPath
+from ..utils.image import ScreenshotFromImage
+from tempfile import mktemp
 
 
 class WebElement(Element):
@@ -92,6 +94,10 @@ class WebElement(Element):
                     self._find_dom_element()
                     return getattr(self.dom_element, name)(*args, **kwargs)
             return auto_refresh_wrapper
+
+    def get_screenshot(self):
+        image = self._element.screenshot(mktemp())
+        return ScreenshotFromImage(image)
 
 # TODO: DOC: elements array must not change during iteration
 class ElementCollection(object):
