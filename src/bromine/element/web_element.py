@@ -41,6 +41,11 @@ class WebElement(Element):
         if self._dom_element is None:
             self._find_dom_element()
         return self._dom_element
+    
+    @property
+    def browser(self):
+        """Instance of Selenium WebDriver."""
+        return self._browser
 
     @property
     def scroll(self):

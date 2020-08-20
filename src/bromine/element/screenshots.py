@@ -39,7 +39,7 @@ class ElementPortionScreenshot(ElementScreenshot):
 class ScrollableElementScreenshot(ElementScreenshot):
     def __init__(self, element):
         super(ScrollableElementScreenshot, self).__init__(element)
-        self._pixels_per_point = self._element.driver.window.virtual_pixel_ratio
+        self._pixels_per_point = self._element.browser.window.virtual_pixel_ratio
 
     def _take(self):
         result = self._initialize_result_image()
