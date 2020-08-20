@@ -12,11 +12,6 @@ class ElementScreenshot(object):
         self._assert_element_is_displayed()
         return self._take()
 
-    def rectangle_in_pixels(self):
-        upper_left_corner_in_pixels = self._element.scroll.level
-        size_in_pixels = self._element.size
-        return Rectangle.from_corner_and_size(upper_left_corner_in_pixels, size_in_pixels)
-
     def _assert_element_is_displayed(self):
         assert_that(
             self._element.is_displayed(),
@@ -33,9 +28,13 @@ class ElementPortionScreenshot(ElementScreenshot):
         self._portion = portion
 
     def _take(self):
-        window_image = self._element.get_screenshot().as_image()
-        portion_image = window_image.crop(PIL_box(self.rectangle_in_pixels()))
+        element_image = self._element.get_screenshot().as_image()
+        portion = self._get_element_portion()
+        portion_image = element_image.crop(PIL_box(portion.rectangle_in_pixels()))
         return ScreenshotFromImage(portion_image)
+    
+    def _get_element_portion(self):
+        return ElementPortion(self._element.browser.window, self._portion)
 
 class ScrollableElementScreenshot(ElementScreenshot):
     def __init__(self, element):
@@ -57,3 +56,32 @@ class ScrollableElementScreenshot(ElementScreenshot):
     def _get_tile_screenshot(self, tile):
         tile.scroll_into_view()
         return ElementPortionScreenshot(self._element, tile).take().as_image()
+
+class ElementPortion(object):
+    
+    def __init__(self, window, element_portion):
+        self._window = window
+        self._element_portion = element_portion
+
+    def rectangle_in_pixels(self):
+        upper_left_corner_in_pixels = self._upper_left_corner_in_pixels()
+        size_in_pixels = self._size_in_pixels()
+        return Rectangle.from_corner_and_size(upper_left_corner_in_pixels, size_in_pixels)
+
+    def _upper_left_corner_in_pixels(self):
+        return self._in_pixels(self._upper_left_corner())
+
+    def _upper_left_corner(self):
+        return RectSize(0, 0)
+
+    def _in_pixels(self, value_in_points):
+        return self._pixels_per_point() * value_in_points
+
+    def _pixels_per_point(self):
+        return self._window.virtual_pixel_ratio
+
+    def _size_in_pixels(self):
+        return self._in_pixels(self._size())
+
+    def _size(self):
+        return self._element_portion.size
