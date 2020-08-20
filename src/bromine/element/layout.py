@@ -34,14 +34,11 @@ class SimpleVerticalLayout(object):
             return self._get_intermediate_tile(previous_tile)
 
     def _get_first_tile(self):
-        if self._total_height <= self._max_tile_height:
-            tile_height = self._max_tile_height
-        else:
-            tile_height = self._max_tile_height
+        tile_height = self._max_tile_height
         return self._build_tile(0, tile_height)
 
-    def _build_tile(self, top, height):
-        return ElementPortion(self._element, (0, top), (self._width, height))
+    def _build_tile(self, top, height, margin = 0):
+        return ElementPortion(self._element, (0, top), (self._width, height), (0, margin))
 
     def _is_last_tile(self, remaining_scroll):
         return remaining_scroll <= self._max_tile_height
@@ -49,7 +46,8 @@ class SimpleVerticalLayout(object):
     def _get_last_tile(self, remaining_scroll, previous_tile):
         offset = self._get_next_tile_offset(previous_tile)
         height = remaining_scroll
-        return self._build_tile(offset, height)
+        margin = self._max_tile_height - height
+        return self._build_tile(offset, height, margin)
 
     def _get_next_tile_offset(self, previous_tile):
         return previous_tile.bottom +1
@@ -62,9 +60,10 @@ class SimpleVerticalLayout(object):
 
 class ElementPortion(object):
 
-    def __init__(self, element, element_offset, size):
+    def __init__(self, element, element_offset, size, margin):
         self._element = element
         self._content = Rectangle.from_corner_and_size(element_offset, size)
+        self._margin = RectSize(*margin)
 
     @property
     def element_offset(self):
@@ -83,7 +82,7 @@ class ElementPortion(object):
         return self._content.bottom
 
     def scroll_into_view(self):
-        in_view_position = self.element_offset
+        in_view_position = self.element_offset - self._margin
         self._element.scroll.to(*in_view_position)
         has_scrolled = lambda: self._element.scroll.level == in_view_position
         try:
