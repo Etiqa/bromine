@@ -3,7 +3,7 @@ from ..utils.geometry import RectSize
 class ElementScroller(object):
 
     _SCROLL_BY_JS = "arguments[0].scrollBy({},{})"
-    _LEVEL_JS = "return [arguments[0].scrollTop, arguments[0].scrollLeft];"
+    _LEVEL_JS = "return [arguments[0].scrollLeft, arguments[0].scrollTop];"
 
     def __init__(self, element):
         self._element = element
@@ -29,7 +29,7 @@ class ElementScroller(object):
             scroll_options['left'] = x
         if y is not None:
             scroll_options['top'] = y
-        self._javascript('arguments[0].scrollTo({},{})'.format(scroll_options['left'],scroll_options['top']), self._element.dom_element)
+        self._javascript('arguments[0].scrollTo({},{})'.format(scroll_options['left'], scroll_options['top']), self._element.dom_element)
     
     def to_upper_left_corner(self):
         self.to(0, 0)

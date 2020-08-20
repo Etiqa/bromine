@@ -12,7 +12,7 @@ class Html5ElementSize(object):
     @RectSize.wrapped
     def size(self):
         size = self._element.dom_element.size
-        return [size["width"],size["height"]]
+        return [size["width"], size["height"]]
 
     @RectSize.wrapped
     def scroll_size(self):
