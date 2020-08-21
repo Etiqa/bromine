@@ -81,6 +81,10 @@ class ElementPortion(object):
     def bottom(self):
         return self._content.bottom
 
+    @property
+    def margin(self):
+        return self._margin
+
     def scroll_into_view(self):
         in_view_position = self.element_offset - self._margin
         self._element.scroll.to(*in_view_position)

@@ -72,7 +72,8 @@ class ElementPortion(object):
         return self._in_pixels(self._upper_left_corner())
 
     def _upper_left_corner(self):
-        return RectSize(0, 0)
+        element_margin = self._element_portion.margin
+        return element_margin
 
     def _in_pixels(self, value_in_points):
         return self._pixels_per_point() * value_in_points
