@@ -50,7 +50,7 @@ class ScrollableElementScreenshot(ElementScreenshot):
         return ScreenshotFromImage(result)
 
     def _initialize_result_image(self):
-        total_size_in_pixels = self._pixels_per_point * self._element.size
+        total_size_in_pixels = self._pixels_per_point * self._element.scroll_size
         return Image.new('RGBA', total_size_in_pixels)
 
     def _get_tile_screenshot(self, tile):

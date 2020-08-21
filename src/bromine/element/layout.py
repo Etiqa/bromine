@@ -37,7 +37,7 @@ class SimpleVerticalLayout(object):
         tile_height = self._max_tile_height
         return self._build_tile(0, tile_height)
 
-    def _build_tile(self, top, height, margin = 0):
+    def _build_tile(self, top, height, margin=0):
         return ElementPortion(self._element, (0, top), (self._width, height), (0, margin))
 
     def _is_last_tile(self, remaining_scroll):
