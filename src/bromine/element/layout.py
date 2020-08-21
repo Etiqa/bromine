@@ -10,7 +10,8 @@ class SimpleVerticalLayout(object):
     def __init__(self, element):
         total_width, total_height = element.scroll_size
         visible_width, visible_height = element.size
-        assert total_width == visible_width
+        #Need to be fixed for Windows the scrollbar width should be removed
+        # assert total_width == visible_width
         self._element = element
         self._width = total_width
         self._total_height = total_height
